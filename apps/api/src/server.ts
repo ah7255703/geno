@@ -1,22 +1,30 @@
-import { json, urlencoded } from "body-parser";
-import express, { type Express } from "express";
-import morgan from "morgan";
-import cors from "cors";
+import { serve } from '@hono/node-server';
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { zValidator } from '@hono/zod-validator'
+import { z } from 'zod';
+import { socket } from './socket.js';
 
-export const createServer = (): Express => {
-  const app = express();
-  app
-    .disable("x-powered-by")
-    .use(morgan("dev"))
-    .use(urlencoded({ extended: true }))
-    .use(json())
-    .use(cors())
-    .get("/message/:name", (req, res) => {
-      return res.json({ message: `hello ${req.params.name}` });
-    })
-    .get("/status", (_, res) => {
-      return res.json({ ok: true });
-    });
+async function preStart() { }
 
-  return app;
-};
+
+
+
+const app = new Hono({
+    strict: true,
+});
+
+app.use(cors())
+
+const routes = app.get("/", async (_ctx) => {
+    return _ctx.json({ message: "Hello World" })
+})
+const port = 3001
+const server = serve({
+    fetch: app.fetch,
+    port
+}, (info) => {
+    preStart()
+})
+socket.listen(server)
+export type BackendRoutes = typeof routes
