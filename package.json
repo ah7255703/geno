@@ -10,14 +10,14 @@
     "lint": "turbo run lint",
     "test": "turbo run test"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "prettier": "^3.2.5",
-    "turbo": "^2.0.9"
-  },
   "engines": {
     "node": ">=14.0.0",
     "npm": ">=7.0.0"
   },
-  "packageManager": "pnpm@9.5.0"
+  "packageManager": "pnpm@9.5.0",
+  "dependencies": {
+    "@manypkg/cli": "^0.21.4",
+    "prettier": "^3.3.3",
+    "turbo": "^2.0.9"
+  }
 }
