@@ -10,8 +10,8 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "compose": "docker-compose up -d --build",
-    "migrate": "pnpm -F api migrate",
-    "migrate:gen": "pnpm -F api generate"
+    "db:mig": "pnpm -F api migrate",
+    "db:gen": "pnpm -F api generate"
   },
   "engines": {
     "node": ">=14.0.0",
@@ -22,6 +22,7 @@
     "@manypkg/cli": "^0.21.4",
     "drizzle-orm": "^0.32.0",
     "prettier": "^3.3.3",
+    "pg": "^8.11.5",
     "turbo": "^2.0.9"
   }
 }

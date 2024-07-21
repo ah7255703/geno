@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { pgEnum, pgTable, serial, varchar, timestamp, boolean, uuid, text, primaryKey, integer } from 'drizzle-orm/pg-core';
+import { pgEnum, pgTable, serial, varchar, timestamp, boolean, uuid, text, primaryKey, integer, } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 export const userRole = pgEnum("user_role", [
@@ -35,7 +35,7 @@ export const usersTable = pgTable('user', {
 });
 
 export const accountsTable = pgTable('account', {
-    userId: text('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }).primaryKey(),
+    userId: uuid('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
     provider: varchar('provider', { length: 256 }).notNull(),
     providerAccountId: varchar('provider_account_id', { length: 256 }).notNull(),
     refreshToken: varchar('refresh_token', { length: 256 }),
@@ -48,34 +48,30 @@ export const accountsTable = pgTable('account', {
     updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
 }, (table) => {
     return {
-        pk: primaryKey({ columns: [table.provider, table.providerAccountId] }),
+        compositePk: primaryKey({ columns: [table.provider, table.providerAccountId] }),
     }
 });
 
 export const VerificationToken = pgTable('verification_token', {
-    id: serial('id').primaryKey(),
+    id: serial('id'),
     token: varchar('token', { length: 256 }).notNull().unique(),
-    userId: text('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+    userId: uuid('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
     expiresAt: timestamp('expires_at', { mode: "date" }).notNull(),
 }, (table) => {
     return {
-        pk: primaryKey({ columns: [table.token, table.id] }),
+        compositePk: primaryKey({ columns: [table.token, table.id] }),
     }
 })
 
 export const sessionsTable = pgTable('session', {
     sessionToken: varchar('session_token', { length: 256 }).notNull().primaryKey(),
-    userId: text('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+    userId: uuid('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
     expiresAt: timestamp('expires_at', { mode: "date" }).notNull(),
-}, (table) => {
-    return {
-        pk: primaryKey({ columns: [table.sessionToken] }),
-    }
 });
 
 export const authenticatorTable = pgTable('authenticator', {
     credentialID: varchar('credential_id', { length: 256 }).notNull().primaryKey(),
-    userId: text('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+    userId: uuid('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
     providerAccountId: varchar('provider_account_id', { length: 256 }).notNull(),
     credentialPublicKey: text('credential_public_key').notNull(),
     counter: integer('counter').notNull(),

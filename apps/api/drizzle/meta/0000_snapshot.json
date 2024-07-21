@@ -1,5 +1,5 @@
 {
-  "id": "b81af33f-b6b6-46cf-8ce1-0a6dc965d6c5",
+  "id": "700d8bb0-5acf-48a6-aa8e-f79c2c46f55e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -11,7 +11,7 @@
         "id": {
           "name": "id",
           "type": "serial",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "token": {
@@ -22,7 +22,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "text",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -74,8 +74,8 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "text",
-          "primaryKey": true,
+          "type": "uuid",
+          "primaryKey": false,
           "notNull": true
         },
         "provider": {
@@ -179,7 +179,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "text",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -252,7 +252,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "text",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -279,14 +279,7 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "session_session_token_pk": {
-          "name": "session_session_token_pk",
-          "columns": [
-            "session_token"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "public.user": {

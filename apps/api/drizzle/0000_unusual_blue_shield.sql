@@ -17,16 +17,16 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verification_token" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" serial NOT NULL,
 	"token" varchar(256) NOT NULL,
-	"user_id" text NOT NULL,
+	"user_id" uuid NOT NULL,
 	"expires_at" timestamp NOT NULL,
 	CONSTRAINT "verification_token_token_id_pk" PRIMARY KEY("token","id"),
 	CONSTRAINT "verification_token_token_unique" UNIQUE("token")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "account" (
-	"user_id" text PRIMARY KEY NOT NULL,
+	"user_id" uuid NOT NULL,
 	"provider" varchar(256) NOT NULL,
 	"provider_account_id" varchar(256) NOT NULL,
 	"refresh_token" varchar(256),
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS "account" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "authenticator" (
 	"credential_id" varchar(256) PRIMARY KEY NOT NULL,
-	"user_id" text NOT NULL,
+	"user_id" uuid NOT NULL,
 	"provider_account_id" varchar(256) NOT NULL,
 	"credential_public_key" text NOT NULL,
 	"counter" integer NOT NULL,
@@ -53,9 +53,8 @@ CREATE TABLE IF NOT EXISTS "authenticator" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "session" (
 	"session_token" varchar(256) PRIMARY KEY NOT NULL,
-	"user_id" text NOT NULL,
-	"expires_at" timestamp NOT NULL,
-	CONSTRAINT "session_session_token_pk" PRIMARY KEY("session_token")
+	"user_id" uuid NOT NULL,
+	"expires_at" timestamp NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
