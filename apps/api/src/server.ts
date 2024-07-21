@@ -1,14 +1,12 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { zValidator } from '@hono/zod-validator'
-import { z } from 'zod';
 import { socket } from './socket.js';
+import { onConnect as RedisonStart } from './pubsub/index.js';
 
-async function preStart() { }
-
-
-
+async function preStart() {
+    RedisonStart()
+}
 
 const app = new Hono({
     strict: true,
@@ -26,5 +24,6 @@ const server = serve({
 }, (info) => {
     preStart()
 })
+console.log(`Server running at http://localhost:${port}`)
 socket.listen(server)
 export type BackendRoutes = typeof routes
