@@ -1,8 +1,6 @@
 import { sql } from 'drizzle-orm';
-import { pgEnum, pgTable, serial, varchar, timestamp, boolean, uuid } from 'drizzle-orm/pg-core';
+import { pgEnum, pgTable, serial, varchar, timestamp, boolean, uuid, text, primaryKey, integer } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { createInsertSchema } from 'drizzle-zod';
-import { org } from './org';
 
 export const userRole = pgEnum("user_role", [
     "admin",
@@ -21,7 +19,7 @@ export const creationMethod = pgEnum("creation_method", [
     "email-only",
 ]);
 
-export const user = pgTable('users', {
+export const usersTable = pgTable('user', {
     id: uuid('id').default(sql`gen_random_uuid()`).primaryKey(),
     name: varchar('name', { length: 256 }).notNull(),
     email: varchar('email', { length: 256 }).unique().notNull(),
@@ -30,30 +28,82 @@ export const user = pgTable('users', {
     updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
     password: varchar('password', { length: 256 }),
     creationMethod: creationMethod('creation_method').notNull().default("email-password"),
-    verifiedEmailAt: timestamp('verified_email_at'),
-    verifiedEmail: boolean('verified_email').notNull().default(false)
-});
-
-export const profile = pgTable('profile', {
-    id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
-    createdAt: timestamp('created_at').notNull().default(sql`now()`),
-    updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
+    emailVerifiedAt: timestamp('verified_email_at'),
+    emailVerified: boolean('verified_email').notNull().default(false),
     image: varchar('image_url', { length: 256 }),
     theme: theme('theme').notNull().default("system"),
-    userId: uuid('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
 });
 
+export const accountsTable = pgTable('account', {
+    userId: text('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }).primaryKey(),
+    provider: varchar('provider', { length: 256 }).notNull(),
+    providerAccountId: varchar('provider_account_id', { length: 256 }).notNull(),
+    refreshToken: varchar('refresh_token', { length: 256 }),
+    accessToken: varchar('access_token', { length: 256 }),
+    expiresAt: timestamp('expires_at', { mode: "date" }),
+    tokenType: varchar('token_type', { length: 256 }),
+    scope: varchar('scope', { length: 256 }),
+    idToken: varchar('id_token', { length: 256 }),
+    createdAt: timestamp('created_at').notNull().default(sql`now()`),
+    updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
+}, (table) => {
+    return {
+        pk: primaryKey({ columns: [table.provider, table.providerAccountId] }),
+    }
+});
 
-export const usersRelations = relations(user, ({ one, many }) => ({
-    profile: one(profile, {
-        fields: [user.id],
-        references: [profile.userId],
-    }),
-    createdOrgs: many(org),
+export const VerificationToken = pgTable('verification_token', {
+    id: serial('id').primaryKey(),
+    token: varchar('token', { length: 256 }).notNull().unique(),
+    userId: text('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+    expiresAt: timestamp('expires_at', { mode: "date" }).notNull(),
+}, (table) => {
+    return {
+        pk: primaryKey({ columns: [table.token, table.id] }),
+    }
+})
+
+export const sessionsTable = pgTable('session', {
+    sessionToken: varchar('session_token', { length: 256 }).notNull().primaryKey(),
+    userId: text('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+    expiresAt: timestamp('expires_at', { mode: "date" }).notNull(),
+}, (table) => {
+    return {
+        pk: primaryKey({ columns: [table.sessionToken] }),
+    }
+});
+
+export const authenticatorTable = pgTable('authenticator', {
+    credentialID: varchar('credential_id', { length: 256 }).notNull().primaryKey(),
+    userId: text('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+    providerAccountId: varchar('provider_account_id', { length: 256 }).notNull(),
+    credentialPublicKey: text('credential_public_key').notNull(),
+    counter: integer('counter').notNull(),
+    credentialDeviceType: varchar('credential_device_type', { length: 256 }),
+    credentialBackedUp: boolean('credential_backed_up').notNull().default(false),
+    transports: text('transports'),
+})
+
+export const accountsTableRelations = relations(accountsTable, ({ one, many }) => ({
+    user: one(usersTable),
 }));
 
+export const authenticatorTableRelations = relations(authenticatorTable, ({ one, many }) => ({
+    user: one(usersTable),
+}));
 
+export const verificationTokenRelations = relations(VerificationToken, ({ one, many }) => ({
+    user: one(usersTable),
+}));
 
-const createUserSchema = createInsertSchema(user);
-const updateUserSchema = createInsertSchema(user);
-export { createUserSchema, updateUserSchema };
+export const sessionsTableRelations = relations(sessionsTable, ({ one, many }) => ({
+    user: one(usersTable),
+}));
+
+export const userRelations = relations(usersTable, ({ one, many }) => ({
+    accounts: many(accountsTable),
+    authenticator: many(sessionsTable),
+    sessions: many(sessionsTable),
+    verificationTokens: many(VerificationToken),
+    authenticators: many(authenticatorTable),
+}));

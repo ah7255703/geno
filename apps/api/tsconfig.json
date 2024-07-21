@@ -3,6 +3,9 @@
   "compilerOptions": {
     "composite": true,
     "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "module": "ES2015",
     "lib": [
       "ES2015"
     ],

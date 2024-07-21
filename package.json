@@ -8,7 +8,10 @@
     "dev": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "compose": "docker-compose up -d --build",
+    "migrate": "pnpm -F api migrate",
+    "migrate:gen": "pnpm -F api generate"
   },
   "engines": {
     "node": ">=14.0.0",
@@ -17,6 +20,7 @@
   "packageManager": "pnpm@9.5.0",
   "dependencies": {
     "@manypkg/cli": "^0.21.4",
+    "drizzle-orm": "^0.32.0",
     "prettier": "^3.3.3",
     "turbo": "^2.0.9"
   }
