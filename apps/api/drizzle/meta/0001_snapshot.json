@@ -1,6 +1,6 @@
 {
-  "id": "aa3529f7-8d39-46b3-a593-b8f942dd6a24",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "2539be1e-b31b-484c-9aed-2dff270a418c",
+  "prevId": "aa3529f7-8d39-46b3-a593-b8f942dd6a24",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -258,12 +258,6 @@
         "token": {
           "name": "token",
           "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         }

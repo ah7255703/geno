@@ -15,10 +15,14 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthIndexImport } from './routes/auth/index'
 import { Route as AuthRegisterImport } from './routes/auth/register'
+import { Route as authenticatedLayoutSettingsImport } from './routes/(authenticated)/_layout-settings'
 import { Route as authenticatedLayout2Import } from './routes/(authenticated)/_layout-2'
-import { Route as authenticatedLayoutImport } from './routes/(authenticated)/_layout'
 import { Route as authenticatedLayout2IndexImport } from './routes/(authenticated)/_layout-2/index'
-import { Route as authenticatedLayoutSettingsProfileImport } from './routes/(authenticated)/_layout/settings/profile'
+import { Route as authenticatedLayoutSettingsSettingsIndexImport } from './routes/(authenticated)/_layout-settings/settings/index'
+import { Route as authenticatedLayoutSettingsSettingsSocialAccountsImport } from './routes/(authenticated)/_layout-settings/settings/social-accounts'
+import { Route as authenticatedLayoutSettingsSettingsProfileImport } from './routes/(authenticated)/_layout-settings/settings/profile'
+import { Route as authenticatedLayoutSettingsSettingsGeneralImport } from './routes/(authenticated)/_layout-settings/settings/general'
+import { Route as authenticatedLayoutSettingsSettingsApperanceImport } from './routes/(authenticated)/_layout-settings/settings/apperance'
 
 // Create Virtual Routes
 
@@ -41,13 +45,14 @@ const AuthRegisterRoute = AuthRegisterImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const authenticatedLayoutSettingsRoute =
+  authenticatedLayoutSettingsImport.update({
+    id: '/_layout-settings',
+    getParentRoute: () => authenticatedRoute,
+  } as any)
+
 const authenticatedLayout2Route = authenticatedLayout2Import.update({
   id: '/_layout-2',
-  getParentRoute: () => authenticatedRoute,
-} as any)
-
-const authenticatedLayoutRoute = authenticatedLayoutImport.update({
-  id: '/_layout',
   getParentRoute: () => authenticatedRoute,
 } as any)
 
@@ -56,10 +61,34 @@ const authenticatedLayout2IndexRoute = authenticatedLayout2IndexImport.update({
   getParentRoute: () => authenticatedLayout2Route,
 } as any)
 
-const authenticatedLayoutSettingsProfileRoute =
-  authenticatedLayoutSettingsProfileImport.update({
+const authenticatedLayoutSettingsSettingsIndexRoute =
+  authenticatedLayoutSettingsSettingsIndexImport.update({
+    path: '/settings/',
+    getParentRoute: () => authenticatedLayoutSettingsRoute,
+  } as any)
+
+const authenticatedLayoutSettingsSettingsSocialAccountsRoute =
+  authenticatedLayoutSettingsSettingsSocialAccountsImport.update({
+    path: '/settings/social-accounts',
+    getParentRoute: () => authenticatedLayoutSettingsRoute,
+  } as any)
+
+const authenticatedLayoutSettingsSettingsProfileRoute =
+  authenticatedLayoutSettingsSettingsProfileImport.update({
     path: '/settings/profile',
-    getParentRoute: () => authenticatedLayoutRoute,
+    getParentRoute: () => authenticatedLayoutSettingsRoute,
+  } as any)
+
+const authenticatedLayoutSettingsSettingsGeneralRoute =
+  authenticatedLayoutSettingsSettingsGeneralImport.update({
+    path: '/settings/general',
+    getParentRoute: () => authenticatedLayoutSettingsRoute,
+  } as any)
+
+const authenticatedLayoutSettingsSettingsApperanceRoute =
+  authenticatedLayoutSettingsSettingsApperanceImport.update({
+    path: '/settings/apperance',
+    getParentRoute: () => authenticatedLayoutSettingsRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -73,18 +102,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedImport
       parentRoute: typeof rootRoute
     }
-    '/(authenticated)/_layout': {
-      id: '/_layout'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof authenticatedLayoutImport
-      parentRoute: typeof authenticatedRoute
-    }
     '/(authenticated)/_layout-2': {
       id: '/_layout-2'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof authenticatedLayout2Import
+      parentRoute: typeof authenticatedRoute
+    }
+    '/(authenticated)/_layout-settings': {
+      id: '/_layout-settings'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof authenticatedLayout2Import
+      preLoaderRoute: typeof authenticatedLayoutSettingsImport
       parentRoute: typeof authenticatedImport
     }
     '/auth/register': {
@@ -108,12 +137,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedLayout2IndexImport
       parentRoute: typeof authenticatedLayout2Import
     }
-    '/(authenticated)/_layout/settings/profile': {
-      id: '/_layout/settings/profile'
+    '/(authenticated)/_layout-settings/settings/apperance': {
+      id: '/_layout-settings/settings/apperance'
+      path: '/settings/apperance'
+      fullPath: '/settings/apperance'
+      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsApperanceImport
+      parentRoute: typeof authenticatedLayoutSettingsImport
+    }
+    '/(authenticated)/_layout-settings/settings/general': {
+      id: '/_layout-settings/settings/general'
+      path: '/settings/general'
+      fullPath: '/settings/general'
+      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsGeneralImport
+      parentRoute: typeof authenticatedLayoutSettingsImport
+    }
+    '/(authenticated)/_layout-settings/settings/profile': {
+      id: '/_layout-settings/settings/profile'
       path: '/settings/profile'
       fullPath: '/settings/profile'
-      preLoaderRoute: typeof authenticatedLayoutSettingsProfileImport
-      parentRoute: typeof authenticatedLayoutImport
+      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsProfileImport
+      parentRoute: typeof authenticatedLayoutSettingsImport
+    }
+    '/(authenticated)/_layout-settings/settings/social-accounts': {
+      id: '/_layout-settings/settings/social-accounts'
+      path: '/settings/social-accounts'
+      fullPath: '/settings/social-accounts'
+      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsSocialAccountsImport
+      parentRoute: typeof authenticatedLayoutSettingsImport
+    }
+    '/(authenticated)/_layout-settings/settings/': {
+      id: '/_layout-settings/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsIndexImport
+      parentRoute: typeof authenticatedLayoutSettingsImport
     }
   }
 }
@@ -122,12 +179,17 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   authenticatedRoute: authenticatedRoute.addChildren({
-    authenticatedLayoutRoute: authenticatedLayoutRoute.addChildren({
-      authenticatedLayoutSettingsProfileRoute,
-    }),
     authenticatedLayout2Route: authenticatedLayout2Route.addChildren({
       authenticatedLayout2IndexRoute,
     }),
+    authenticatedLayoutSettingsRoute:
+      authenticatedLayoutSettingsRoute.addChildren({
+        authenticatedLayoutSettingsSettingsApperanceRoute,
+        authenticatedLayoutSettingsSettingsGeneralRoute,
+        authenticatedLayoutSettingsSettingsProfileRoute,
+        authenticatedLayoutSettingsSettingsSocialAccountsRoute,
+        authenticatedLayoutSettingsSettingsIndexRoute,
+      }),
   }),
   AuthRegisterRoute,
   AuthIndexRoute,
@@ -149,15 +211,8 @@ export const routeTree = rootRoute.addChildren({
     "/": {
       "filePath": "(authenticated)",
       "children": [
-        "/_layout",
-        "/_layout-2"
-      ]
-    },
-    "/_layout": {
-      "filePath": "(authenticated)/_layout.tsx",
-      "parent": "/",
-      "children": [
-        "/_layout/settings/profile"
+        "/_layout-2",
+        "/_layout-settings"
       ]
     },
     "/_layout-2": {
@@ -165,6 +220,17 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/",
       "children": [
         "/_layout-2/"
+      ]
+    },
+    "/_layout-settings": {
+      "filePath": "(authenticated)/_layout-settings.tsx",
+      "parent": "/",
+      "children": [
+        "/_layout-settings/settings/apperance",
+        "/_layout-settings/settings/general",
+        "/_layout-settings/settings/profile",
+        "/_layout-settings/settings/social-accounts",
+        "/_layout-settings/settings/"
       ]
     },
     "/auth/register": {
@@ -177,9 +243,25 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "(authenticated)/_layout-2/index.tsx",
       "parent": "/_layout-2"
     },
-    "/_layout/settings/profile": {
-      "filePath": "(authenticated)/_layout/settings/profile.tsx",
-      "parent": "/_layout"
+    "/_layout-settings/settings/apperance": {
+      "filePath": "(authenticated)/_layout-settings/settings/apperance.tsx",
+      "parent": "/_layout-settings"
+    },
+    "/_layout-settings/settings/general": {
+      "filePath": "(authenticated)/_layout-settings/settings/general.tsx",
+      "parent": "/_layout-settings"
+    },
+    "/_layout-settings/settings/profile": {
+      "filePath": "(authenticated)/_layout-settings/settings/profile.tsx",
+      "parent": "/_layout-settings"
+    },
+    "/_layout-settings/settings/social-accounts": {
+      "filePath": "(authenticated)/_layout-settings/settings/social-accounts.tsx",
+      "parent": "/_layout-settings"
+    },
+    "/_layout-settings/settings/": {
+      "filePath": "(authenticated)/_layout-settings/settings/index.tsx",
+      "parent": "/_layout-settings"
     }
   }
 }

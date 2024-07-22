@@ -1,5 +1,4 @@
 import '@fontsource-variable/noto-sans';
-import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import "./globals.css"
@@ -7,12 +6,32 @@ import {
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query'
-// Import the generated route tree
+import NProgress from 'nprogress'
 import { routeTree } from './routeTree.gen'
+import { ThemeProvider } from 'next-themes';
+import { Toaster } from './components/ui/sonner';
+import { AuthProvider } from './providers/AuthProvider';
+import { UserProvider } from './providers/UserProvider';
+import { Suspense } from 'react';
 
-// Create a new router instance
-const router = createRouter({ routeTree, })
+let np = NProgress.configure({ showSpinner: false, parent: "body", easing: 'ease' });
 
+const router = createRouter({
+    routeTree,
+    context: {
+        user: null
+    },
+})
+
+router.__store.subscribe(() => {
+    let state = router.__store.state;
+    if (state.status === 'idle') {
+        np.done();
+    }
+    if (state.status === 'pending') {
+        np.start();
+    }
+})
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
     interface Register {
@@ -24,13 +43,24 @@ const queryClient = new QueryClient();
 // Render the app
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
-    const root = ReactDOM.createRoot(rootElement)
+    const root = ReactDOM.createRoot(rootElement);
     root.render(
-        <StrictMode>
+        <ThemeProvider defaultTheme='light' attribute='class'>
             <QueryClientProvider client={queryClient}>
-                <RouterProvider
-                    router={router} />
+                <AuthProvider>
+                    <Suspense fallback={"loading user data"}>
+                        <UserProvider>
+                            {({ user }) => {
+                                return <RouterProvider
+                                    context={{ user }}
+                                    router={router} />
+                            }}
+                        </UserProvider>
+                    </Suspense>
+                </AuthProvider>
             </QueryClientProvider>
-        </StrictMode>,
+            <Toaster />
+        </ThemeProvider>
+        ,
     )
 }

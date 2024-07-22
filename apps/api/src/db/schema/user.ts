@@ -1,6 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { pgEnum, pgTable, serial, varchar, timestamp, boolean, uuid, text, primaryKey, integer, } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
+import { socialAccountsTable } from './socialAccounts';
 
 export const userRole = pgEnum("user_role", [
     "admin",
@@ -45,38 +46,12 @@ export const VerificationToken = pgTable('verification_token', {
     }
 })
 
-export const sessionsTable = pgTable('session', {
-    sessionToken: varchar('session_token', { length: 256 }).notNull().primaryKey(),
-    userId: uuid('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
-    expiresAt: timestamp('expires_at', { mode: "date" }).notNull(),
-});
-
-export const authenticatorTable = pgTable('authenticator', {
-    credentialID: varchar('credential_id', { length: 256 }).notNull().primaryKey(),
-    userId: uuid('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
-    providerAccountId: varchar('provider_account_id', { length: 256 }).notNull(),
-    credentialPublicKey: text('credential_public_key').notNull(),
-    counter: integer('counter').notNull(),
-    credentialDeviceType: varchar('credential_device_type', { length: 256 }),
-    credentialBackedUp: boolean('credential_backed_up').notNull().default(false),
-    transports: text('transports'),
-})
-
-export const authenticatorTableRelations = relations(authenticatorTable, ({ one, many }) => ({
-    user: one(usersTable),
-}));
-
 export const verificationTokenRelations = relations(VerificationToken, ({ one, many }) => ({
     user: one(usersTable),
 }));
 
-export const sessionsTableRelations = relations(sessionsTable, ({ one, many }) => ({
-    user: one(usersTable),
-}));
 
 export const userRelations = relations(usersTable, ({ one, many }) => ({
-    authenticator: many(sessionsTable),
-    sessions: many(sessionsTable),
     verificationTokens: many(VerificationToken),
-    authenticators: many(authenticatorTable),
+    socialAccounts: many(socialAccountsTable)
 }));

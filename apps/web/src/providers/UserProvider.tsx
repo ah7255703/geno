@@ -2,19 +2,21 @@ import { client } from "@/honoClient";
 import { createSafeProvider } from "./create-safe-provider";
 import { InferResponseType } from 'hono/client';
 import { useAuthContext } from "./AuthProvider";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-type User = InferResponseType<typeof client.private.user.me.$get>;
+export type BackendUser = InferResponseType<typeof client.private.user.me.$get>;
 
-const [SafeProvider, useUser] = createSafeProvider<{
-    user: User | null;
+type SharedData = {
+    user: BackendUser | null;
     isLoading: boolean;
     authenticated: boolean;
-}>();
+}
 
-function UserProvider({ children }: { children: React.ReactNode }) {
+const [SafeProvider, useUser] = createSafeProvider<SharedData>();
+
+function UserProvider({ children }: { children: ((data: SharedData) => React.ReactNode) }) {
     const { tokens } = useAuthContext();
-    const { data, isLoading } = useQuery({
+    const { data, isLoading } = useSuspenseQuery({
         queryKey: [tokens],
         queryFn: async () => {
             let da = await client.private.user.me.$get();
@@ -28,7 +30,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
     return (
         <SafeProvider value={{ user, isLoading, authenticated }}>
-            {children}
+            {children({ user, isLoading, authenticated })}
         </SafeProvider>
     );
 }
