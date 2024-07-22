@@ -11,7 +11,7 @@ import {
 import { routeTree } from './routeTree.gen'
 
 // Create a new router instance
-const router = createRouter({ routeTree })
+const router = createRouter({ routeTree, })
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
@@ -28,7 +28,8 @@ if (!rootElement.innerHTML) {
     root.render(
         <StrictMode>
             <QueryClientProvider client={queryClient}>
-                <RouterProvider router={router} />
+                <RouterProvider
+                    router={router} />
             </QueryClientProvider>
         </StrictMode>,
     )

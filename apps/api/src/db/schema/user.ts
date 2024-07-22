@@ -34,24 +34,6 @@ export const usersTable = pgTable('user', {
     theme: theme('theme').notNull().default("system"),
 });
 
-export const accountsTable = pgTable('account', {
-    userId: uuid('user_id').notNull().references(() => usersTable.id, { onDelete: "cascade" }),
-    provider: varchar('provider', { length: 256 }).notNull(),
-    providerAccountId: varchar('provider_account_id', { length: 256 }).notNull(),
-    refreshToken: varchar('refresh_token', { length: 256 }),
-    accessToken: varchar('access_token', { length: 256 }),
-    expiresAt: timestamp('expires_at', { mode: "date" }),
-    tokenType: varchar('token_type', { length: 256 }),
-    scope: varchar('scope', { length: 256 }),
-    idToken: varchar('id_token', { length: 256 }),
-    createdAt: timestamp('created_at').notNull().default(sql`now()`),
-    updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
-}, (table) => {
-    return {
-        compositePk: primaryKey({ columns: [table.provider, table.providerAccountId] }),
-    }
-});
-
 export const VerificationToken = pgTable('verification_token', {
     id: serial('id'),
     token: varchar('token', { length: 256 }).notNull().unique(),
@@ -80,10 +62,6 @@ export const authenticatorTable = pgTable('authenticator', {
     transports: text('transports'),
 })
 
-export const accountsTableRelations = relations(accountsTable, ({ one, many }) => ({
-    user: one(usersTable),
-}));
-
 export const authenticatorTableRelations = relations(authenticatorTable, ({ one, many }) => ({
     user: one(usersTable),
 }));
@@ -97,7 +75,6 @@ export const sessionsTableRelations = relations(sessionsTable, ({ one, many }) =
 }));
 
 export const userRelations = relations(usersTable, ({ one, many }) => ({
-    accounts: many(accountsTable),
     authenticator: many(sessionsTable),
     sessions: many(sessionsTable),
     verificationTokens: many(VerificationToken),

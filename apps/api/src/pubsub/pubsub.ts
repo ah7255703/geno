@@ -2,7 +2,6 @@ import { RedisClientType } from 'redis';
 import { z, ZodSchema } from 'zod';
 import { publisher, subscriber } from '.';
 
-
 function publishTypedMessage<T extends ZodSchema>(redisClient: RedisClientType, schema: T) {
     return {
         channel: (channel: string) => {

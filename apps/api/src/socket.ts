@@ -1,4 +1,3 @@
 import { Server } from "socket.io";
 
-
-export const socket: Server = new Server();
+export const socket: Server = new Server({});

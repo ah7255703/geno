@@ -1,6 +1,12 @@
 {
   "extends": "@repo/typescript-config/base.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@db/*": [
+        "src/db/*"
+      ]
+    },
     "composite": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Bundler",
