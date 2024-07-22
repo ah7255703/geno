@@ -13,6 +13,7 @@ import { db } from '@db/index.js';
 import { eq } from 'drizzle-orm';
 import { userRoutes } from './routes/user.js';
 import _ from 'lodash';
+import { providerRoutes } from './routes/providers.js';
 
 async function preStart() {
     RedisonStart()
@@ -28,7 +29,6 @@ declare module "hono" {
 const publicApp = new Hono({
     strict: true,
 }).basePath("/api");
-
 
 publicApp.use(cors())
 publicApp.use(logger())
@@ -67,12 +67,14 @@ publicApp.use("/private/*", async (_ctx, next) => {
 })
 
 const privateApp = new Hono()
-    .route('user', userRoutes)
+    .route('/user', userRoutes)
+    .route("/providers", providerRoutes)
 
 
 const allRoutes =
     publicApp.route("/auth", authRoutes)
         .route("/private", privateApp)
+
 const port = 3001
 const server = serve({
     fetch: publicApp.fetch,

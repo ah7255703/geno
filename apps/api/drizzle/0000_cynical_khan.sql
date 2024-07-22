@@ -16,6 +16,12 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."supported_providers" AS ENUM('linkedin');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verification_token" (
 	"id" serial NOT NULL,
 	"token" varchar(256) NOT NULL,
@@ -44,19 +50,18 @@ CREATE TABLE IF NOT EXISTS "user" (
 CREATE TABLE IF NOT EXISTS "social_accounts" (
 	"id" serial NOT NULL,
 	"user_id" uuid NOT NULL,
-	"provider" uuid NOT NULL,
 	"provider_account_id" uuid NOT NULL,
 	"token_expiry" timestamp NOT NULL,
 	"access_token" uuid NOT NULL,
 	"refresh_token" uuid,
 	"created_at" timestamp NOT NULL,
-	"updated_at" timestamp NOT NULL
+	"updated_at" timestamp NOT NULL,
+	"provider" "supported_providers" NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "black_listed_refresh_tokens" (
 	"id" serial NOT NULL,
 	"token" varchar(256) NOT NULL,
-	"expires_at" timestamp NOT NULL,
 	CONSTRAINT "black_listed_refresh_tokens_token_id_pk" PRIMARY KEY("token","id"),
 	CONSTRAINT "black_listed_refresh_tokens_token_unique" UNIQUE("token")
 );

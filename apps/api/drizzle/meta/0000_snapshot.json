@@ -1,5 +1,5 @@
 {
-  "id": "aa3529f7-8d39-46b3-a593-b8f942dd6a24",
+  "id": "21c56177-83dc-4bc0-9586-b5313f457efa",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -183,12 +183,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "provider": {
-          "name": "provider",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
         "provider_account_id": {
           "name": "provider_account_id",
           "type": "uuid",
@@ -222,6 +216,13 @@
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "provider": {
+          "name": "provider",
+          "type": "supported_providers",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         }
@@ -258,12 +259,6 @@
         "token": {
           "name": "token",
           "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         }
@@ -315,6 +310,13 @@
       "values": [
         "admin",
         "user"
+      ]
+    },
+    "public.supported_providers": {
+      "name": "supported_providers",
+      "schema": "public",
+      "values": [
+        "linkedin"
       ]
     }
   },
