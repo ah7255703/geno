@@ -1,8 +1,8 @@
 import KeyController from "keycon";
-import { StoreRootValue, StoreState } from "../store";
-import Debugger from "../utils/debugger";
+import { StoreRootValue, StoreState } from "@scena/react-store";
+import Debugger from "../utils/Debugger";
 import { inputChecker } from "../utils/utils";
-import ActionManager from "./actionManager";
+import ActionManager from "./ActionManager";
 
 
 export default class KeyManager {

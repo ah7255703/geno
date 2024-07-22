@@ -2,6 +2,9 @@
 import * as React from "react";
 import Moveable, { ElementGuidelineValueOption, MoveableRefType, SnapDirections } from "react-moveable";
 import { getContentElement } from "../utils/utils";
+import { DimensionViewable } from "./ables/DimensionViewable";
+import { DeleteButtonViewable } from "./ables/DeleteButtonViewable";
+import { useStoreState, useStoreStateValue, useStoreValue } from "@scena/react-store";
 import {
     $actionManager, $layerManager, $editor,
     $historyManager, $horizontalGuidelines, $infiniteViewer,
@@ -9,9 +12,6 @@ import {
     $selecto, $verticalGuidelines, $zoom, $pointer, $groupOrigin,
 } from "../stores/stores";
 import { $alt, $shift } from "../stores/keys";
-import { useStoreState, useStoreStateValue, useStoreValue } from "../store";
-import { DimensionViewable } from "./viewable/DimentionViewable";
-import { DeleteButtonViewable } from "./viewable/DeleteButtonViewable";
 
 const SNAP_DIRECTIONS: SnapDirections = {
     top: true, left: true,

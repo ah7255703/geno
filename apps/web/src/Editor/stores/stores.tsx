@@ -3,21 +3,21 @@ import Moveable from "react-moveable";
 import Selecto from "react-selecto";
 import InfiniteViewer from "react-infinite-viewer";
 import Guides from "@scena/react-guides";
+import { atom, compute } from "@scena/react-store";
 
-import ClipboardManager from "../managers/clipboardManager";
+
+import ClipboardManager from "../managers/ClipboardManager";
 import HistoryManager from "../managers/HistoryManager";
-import LayerManager from "../managers/layerManager";
-import KeyManager from "../managers/keyManager";
-import MemoryManager from "../managers/memoryManager";
-import ActionManager from "../managers/actionManager";
+import LayerManager from "../managers/LayerManager";
+import KeyManager from "../managers/KeyManager";
+import MemoryManager from "../managers/MemoryManager";
+import ActionManager from "../managers/ActionManager";
 
 import { EditorManagerInstance } from "../EditorManager";
 import { ScenaElementLayer, ScenaElementLayerGroup } from "../types";
 import { Histories } from "../managers/histories/histories";
-import { atom, compute } from "../store";
 
 
-export const $showGuides = atom<boolean>(true);
 export const $darkMode = atom<boolean>(true);
 
 
@@ -52,5 +52,6 @@ export const $infiniteViewer = atom<MutableRefObject<InfiniteViewer | null> | nu
 export const $horizontalGuides = atom<MutableRefObject<Guides | null> | null>(null);
 export const $verticalGuides = atom<MutableRefObject<Guides | null> | null>(null);
 // export const $menu = atom<MutableRefObject<Menu | null> | null>(null);
+
 
 

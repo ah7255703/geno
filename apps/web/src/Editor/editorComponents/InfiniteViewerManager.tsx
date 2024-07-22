@@ -1,5 +1,6 @@
 import * as React from "react";
 import InfiniteViewer from "react-infinite-viewer";
+import { useStoreStateSetValue, useStoreStateValue, useStoreValue } from "@scena/react-store";
 import { $space } from "../stores/keys";
 import {
     $actionManager, $horizontalGuides, $layerManager, $moveable,
@@ -7,7 +8,6 @@ import {
     $selectedLayers, $selecto, $verticalGuides, $zoom,
 } from "../stores/stores";
 import { prefix } from "../utils/utils";
-import { useStoreStateSetValue, useStoreStateValue, useStoreValue } from "../store";
 
 export interface InfiniteViewerManagerProps {
     children: React.ReactNode;
@@ -84,3 +84,5 @@ export const InfiniteViewerManager = React.forwardRef<InfiniteViewer, InfiniteVi
 });
 
 InfiniteViewerManager.displayName = "InfiniteViewerManager";
+
+

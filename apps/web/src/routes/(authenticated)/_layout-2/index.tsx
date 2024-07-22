@@ -1,6 +1,8 @@
-import { Editor } from '@/Editor'
+import Editor from '@/Editor/Editor'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(authenticated)/_layout-2/')({
-  component: () => <Editor />
+  component: () => <div className='h-screen w-full'>
+    <Editor />
+  </div>
 })

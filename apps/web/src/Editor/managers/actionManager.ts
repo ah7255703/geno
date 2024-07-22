@@ -1,6 +1,6 @@
 import EventEmitter, { EventListener, EventHash } from "@scena/event-emitter";
 import { IObject, isString } from "@daybrush/utils";
-import Debugger from "../utils/debugger";
+import Debugger from "../utils/Debugger";
 
 interface ActionEvent {
     inputEvent?: Event;

@@ -6,39 +6,40 @@ import { styled } from "react-css-styled";
 import Moveable from "react-moveable";
 
 // import ToolBar from "./ToolBar/ToolBar";
-import Viewport, { ViewportInstnace } from "./components/viewPort";
+import Viewport, { ViewportInstnace } from "./editorComponents/Viewport";
 import { prefix, checkInput, getParnetScenaElement, keyChecker, isArrayEquals } from "./utils/utils";
 
-import LayerManager, { createGroup, createLayer } from "./managers/layerManager";
-import KeyManager from "./managers/keyManager";
-import HistoryManager from "./managers/historyManager";
-import ActionManager from "./managers/actionManager";
-import MemoryManager from "./managers/memoryManager";
+import LayerManager, { createGroup, createLayer } from "./managers/LayerManager";
+import KeyManager from "./managers/KeyManager";
+import HistoryManager from "./managers/HistoryManager";
+import ActionManager from "./managers/ActionManager";
+import MemoryManager from "./managers/MemoryManager";
 
-import { EDITOR_CSS } from "./css";
+import { EDITOR_CSS } from "./consts";
 
 import { useStoreRoot, useStoreStateSetPromise, useStoreStateValue, useStoreValue } from "@scena/react-store";
 import {
     $actionManager, $layerManager, $editor,
     $historyManager, $horizontalGuides, $infiniteViewer,
     $keyManager, $layers, $memoryManager, $moveable,
-    $selectedLayers, $selecto, $verticalGuides, $zoom, $showGuides, $darkMode,
+    $selectedLayers, $selecto, $verticalGuides, $zoom, $darkMode,
 } from "./stores/stores";
 import { $alt, $meta, $shift, $space } from "./stores/keys";
 
-
-import { GuidesManager } from "./components/guidesManager";
-import { InfiniteViewerManager } from "./components/infiniteViewerManager";
-import { SelectoManager } from "./components/selectoManager";
-import { MoveableManager } from "./components/movableManager";
+import { InfiniteViewerManager } from "./editorComponents/InfiniteViewerManager";
+import { SelectoManager } from "./editorComponents/SelectoManager";
+import { MoveableManager } from "./editorComponents/MoveableManager";
 import { ScenaElementLayer, ScenaElementLayerGroup } from "./types";
+import ToolBar from "./uis/ToolBar";
+import MenuList from "./uis/Menu";
+import { Tabs } from "./uis/Tabs";
+import { Histories, registerHistoryTypes } from "./managers/histories/histories";
+import { readFiles } from "./managers/FileManager";
+import ColorPickerPortal from "./uis/ColorPickerPortal";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-
-
+import { ScenaIcon } from "./uis/icons";
 
 const EditorElement = styled("div", EDITOR_CSS);
-
-
 
 export interface EditorManagerInstance {
     editorElementRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -47,12 +48,9 @@ export interface EditorManagerInstance {
     memoryManager: MemoryManager;
     layerManager: LayerManager;
     keyManager: KeyManager;
-
-    // menuRef: React.MutableRefObject<ToolBar | null>;
     moveableRef: React.MutableRefObject<Moveable | null>;
     selectoRef: React.MutableRefObject<Selecto | null>;
     viewportRef: React.MutableRefObject<ViewportInstnace | null>;
-
     changeLayers(layers: ScenaElementLayer[], groups?: ScenaElementLayerGroup): Promise<boolean>;
     setLayers(layers: ScenaElementLayer[], groups?: ScenaElementLayerGroup): Promise<boolean>;
     setSelectedLayers(
@@ -64,7 +62,6 @@ export interface EditorManagerInstance {
 export default function EditorManager2() {
     const root = useStoreRoot();
     const editorRef = React.useRef<EditorManagerInstance>();
-
     const historyManager = React.useMemo(() => new HistoryManager<Histories>(editorRef), []);
     const actionManager = React.useMemo(() => new ActionManager(), []);
     const memoryManager = React.useMemo(() => new MemoryManager(), []);
@@ -98,7 +95,6 @@ export default function EditorManager2() {
     useStoreValue($verticalGuides, verticalGuidesRef);
     useStoreValue($editor, editorRef);
 
-    const showGuidesStore = useStoreValue($showGuides);
     const zoomStore = useStoreValue($zoom);
     const layerStore = useStoreValue($layers);
 
@@ -155,7 +151,7 @@ export default function EditorManager2() {
                 jsx: <ScenaIcon stroke="#333" style={{
                     width: "300px",
                     height: "300px",
-                }}/>,
+                }} />,
             }),
             createLayer({
                 title: "Main Title",
@@ -182,8 +178,6 @@ export default function EditorManager2() {
             }),
         ];
         layerManager.setLayers(layers, groups);
-
-
         layerStore.value = layers;
         return layers;
     }, []);
@@ -206,23 +200,6 @@ export default function EditorManager2() {
         if (!parentTarget) {
             return;
         }
-        // const info = viewportRef.current!.getInfoByElement(parentTarget)!;
-
-
-        // if (!info.attrs!.contenteditable) {
-        //     return
-        // }
-        // const nextText = (parentTarget as HTMLElement).innerText;
-
-        // if (info.innerText === nextText) {
-        //     return;
-        // }
-        // historyManager.addHistory("changeText", {
-        //     id: info.id,
-        //     prev: info.innerText,
-        //     next: nextText,
-        // });
-        // info.innerText = nextText;
     }, []);
     const changeLayers = React.useCallback((layers: ScenaElementLayer[], groups = layerManager.groups) => {
         layerManager.setLayers(layers, groups);
@@ -296,8 +273,6 @@ export default function EditorManager2() {
         actionManager.on("render.end", onUpdate);
         actionManager.on("changed.targets", onUpdate);
         actionManager.on("update.rect", onUpdate);
-
-
         actionManager.on("select.all", e => {
             e.inputEvent?.preventDefault();
             const layers = root.get($layers);
@@ -325,10 +300,6 @@ export default function EditorManager2() {
         keyManager.toggleState(["meta"], $meta, keyChecker);
         keyManager.toggleState(["alt"], $alt, keyChecker);
 
-        // action down
-        keyManager.keydown(["shift", "r"], () => {
-            showGuidesStore.update(!showGuidesStore.value);
-        });
         keyManager.actionDown(["left"], "move.left");
         keyManager.actionDown(["right"], "move.right");
         keyManager.actionDown(["up"], "move.up");
@@ -367,7 +338,6 @@ export default function EditorManager2() {
     }, []);
 
 
-    const showGuides = useStoreStateValue($showGuides);
     const darkMode = useStoreStateValue($darkMode);
     const leftTabs = React.useMemo(() => [
         "layers",
@@ -383,8 +353,7 @@ export default function EditorManager2() {
     return React.useMemo(() => <EditorElement
         ref={editorElementRef}
         className={prefix(
-            "editor",
-            showGuides ? "" : "hide-guides",
+            "editor hide-guides",
             darkMode ? "" : "light-mode",
         )}
         onDragOver={(e: DragEvent) => {
@@ -427,8 +396,6 @@ export default function EditorManager2() {
                     <div className={prefix("reset")} onClick={() => {
                         infiniteViewerRef.current!.scrollCenter({ duration: 500, absolute: true });
                     }}></div>
-                    {showGuides && <GuidesManager ref={horizontalGuidesRef} type="horizontal" />}
-                    {showGuides && <GuidesManager ref={verticalGuidesRef} type="vertical" />}
                     <InfiniteViewerManager ref={infiniteViewerRef}>
                         <Viewport ref={viewportRef} onBlur={onBlur}
                             style={{
@@ -450,5 +417,5 @@ export default function EditorManager2() {
                 <ColorPickerPortal />
             </Panel>
         </PanelGroup>
-    </EditorElement>, [showGuides, darkMode]);
+    </EditorElement>, [darkMode]);
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { KeyControllerEvent } from "keycon";
 import { prefixNames } from "framework-utils";
-import { PREFIX, DATA_SCENA_ELEMENT_ID } from "../css";
+import { PREFIX, DATA_SCENA_ELEMENT_ID } from "../consts";
 import {
     ScenaFunctionComponent, ScenaProps, ScenaComponent,
     ScenaJSXElement, ScenaFunctionJSXElement, ScenaElementLayerGroup, ScenaElementLayer,

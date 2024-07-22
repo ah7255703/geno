@@ -1,10 +1,10 @@
 import Guides from "@scena/react-guides";
 import * as React from "react";
+import { useStoreState, useStoreStateValue, useStoreValue } from "@scena/react-store";
 import { $darkMode, $horizontalGuidelines, $scrollPos, $verticalGuidelines, $zoom } from "../stores/stores";
 import { useAction } from "../hooks/useAction";
 import { RectInfo } from "react-moveable";
 import { throttle } from "@daybrush/utils";
-import { useStoreState, useStoreStateValue, useStoreValue } from "../store";
 
 
 function dragPosFormat(value: number) {

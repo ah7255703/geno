@@ -2,12 +2,12 @@ import * as React from "react";
 import { getElementInfo } from "react-moveable";
 import Selecto from "react-selecto";
 import { TargetList } from "@moveable/helper";
+import { useStoreStateValue, useStoreValue } from "@scena/react-store";
 import { $meta, $shift, $space } from "../stores/keys";
 import {
     $actionManager, $editor, $infiniteViewer,
     $layerManager, $layers, $moveable, $selectedTool, $selectedLayers,
 } from "../stores/stores";
-import { useStoreStateValue, useStoreValue } from "../store";
 
 export interface SelectoManagerProps {
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import { useStoreStateValue } from "@scena/react-store";
 import { $actionManager } from "../stores/stores";
-import { useStoreStateValue } from "../store";
 
 export function useAction(actionName: string) {
     const [count, setCount] = useState(0);
