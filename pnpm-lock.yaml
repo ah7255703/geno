@@ -150,21 +150,12 @@ importers:
 
   apps/web:
     dependencies:
-      '@daybrush/utils':
-        specifier: ^1.13.0
-        version: 1.13.0
-      '@egjs/list-differ':
-        specifier: ^1.0.1
-        version: 1.0.1
       '@fontsource-variable/noto-sans':
         specifier: ^5.0.5
         version: 5.0.5
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.52.1(react@18.3.1))
-      '@moveable/helper':
-        specifier: ^0.1.3
-        version: 0.1.3
       '@radix-ui/react-accordion':
         specifier: ^1.2.0
         version: 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -246,30 +237,12 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@scena/event-emitter':
-        specifier: ^1.0.5
-        version: 1.0.5
-      '@scena/matrix':
-        specifier: ^1.1.1
-        version: 1.1.1
-      '@scena/react-folder':
-        specifier: ^0.9.3
-        version: 0.9.3
-      '@scena/react-guides':
-        specifier: ^0.28.2
-        version: 0.28.2
-      '@scena/react-store':
-        specifier: ^0.2.1
-        version: 0.2.1
       '@tanstack/react-query':
         specifier: ^5.51.11
         version: 5.51.11(react@18.3.1)
       '@tanstack/react-router':
         specifier: ^1.45.7
         version: 1.45.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@webtoon/psd':
-        specifier: ^0.4.0
-        version: 0.4.0
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -285,9 +258,6 @@ importers:
       embla-carousel-react:
         specifier: ^8.1.7
         version: 8.1.7(react@18.3.1)
-      framework-utils:
-        specifier: ^1.1.0
-        version: 1.1.0
       hono:
         specifier: ^4.5.1
         version: 4.5.1
@@ -297,9 +267,6 @@ importers:
       input-otp:
         specifier: ^1.2.4
         version: 1.2.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      keycon:
-        specifier: ^1.4.0
-        version: 1.4.0
       lucide-react:
         specifier: ^0.412.0
         version: 0.412.0(react@18.3.1)
@@ -342,9 +309,6 @@ importers:
       recharts:
         specifier: ^2.12.7
         version: 2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      scenejs:
-        specifier: ^1.10.3
-        version: 1.10.3
       sonner:
         specifier: ^1.5.0
         version: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -577,9 +541,6 @@ packages:
 
   '@cfcs/core@0.0.6':
     resolution: {integrity: sha512-FxfJMwoLB8MEMConeXUCqtMGqxdtePQxRBOiGip9ULcYYam3WfCgoY6xdnMaSkYvRvmosp5iuG+TiPofm65+Pw==}
-
-  '@cfcs/core@0.1.0':
-    resolution: {integrity: sha512-kvYX0RpL45XTHJ5sW7teNbKeAa7pK3nNqaJPoFfZDPTIBJOkTtRD3QhkBG+O3Hu69a8xeMoPvF6y/RtJ6JUOdA==}
 
   '@colors/colors@1.6.0':
     resolution: {integrity: sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA==}
@@ -1303,9 +1264,6 @@ packages:
 
   '@microsoft/tsdoc@0.14.2':
     resolution: {integrity: sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==}
-
-  '@moveable/helper@0.1.3':
-    resolution: {integrity: sha512-hSSyPkU7/cZuJys79rG0/xMs2Py09a8RUvBtpi/AftLYeSS8JAmMNwiw9lL19nddsVNB9cb2UON+U6uyFNS8Zw==}
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
@@ -2394,18 +2352,6 @@ packages:
   '@scena/matrix@1.1.1':
     resolution: {integrity: sha512-JVKBhN0tm2Srl+Yt+Ywqu0oLgLcdemDQlD1OxmN9jaCTwaFPZ7tY8n6dhVgMEaR9qcR7r+kAlMXnSfNyYdE+Vg==}
 
-  '@scena/react-folder@0.9.3':
-    resolution: {integrity: sha512-ZcyR+TT3a1AaXbt72eEu+S7S6Nyu5QjVGeWTSoUq6fwryHvGUqStkD+/QEdqIIbxgrcMgKtqKfRO8JJgAlr4Gg==}
-
-  '@scena/react-guides@0.28.2':
-    resolution: {integrity: sha512-3TylBDU32BPk/SARQdZ2dkwW0NbQA7D21XUMMdGm/RXxuMNg39oHrxQ/XjlkFOvRFDgc7gPDsDgi1Am8wRuu1Q==}
-
-  '@scena/react-ruler@0.19.0':
-    resolution: {integrity: sha512-2OEOjLMOptDxdSuEqID2JAljQuYoeoV09MnLjiBeyzJxoUcVjzyBCPwkMbHRKj2Z3WrwztJAFBF+y6yNNM5Lcw==}
-
-  '@scena/react-store@0.2.1':
-    resolution: {integrity: sha512-FlBMXldCEtajG8GrMVT6f0HcGnI0xGG6w/d9ROvlXx9NPwU513TRx8GW+o2f5fcmA4mvbdTRkfcXJ0J41P59xQ==}
-
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
 
@@ -2760,9 +2706,6 @@ packages:
     resolution: {integrity: sha512-yrknSb3Dci6svCd/qhHqhFPDSw0QtjumcqdKMoNNzmOl5lMXTTiqzjWtG4Qask2HdvvzaNgSunbQGet8/GrKdA==}
     peerDependencies:
       vite: ^4 || ^5
-
-  '@webtoon/psd@0.4.0':
-    resolution: {integrity: sha512-ztriE8oFOamRrV9opBURDy+JMiyhur2//vOXsC5CgdnYCB0L1Lnaag4NzP8N+NFCj7uNz9JRYtPmAbQMSDLIsQ==}
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -4529,9 +4472,6 @@ packages:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
 
-  order-map@0.3.1:
-    resolution: {integrity: sha512-RSuElIGwzPuBLzS9Io7G8fpcnQeudg0XswOyOiwRNLX7lkf+eQ/KUp+kcAP7z7nTOdkrfxhZycyXwzFW75iJ6A==}
-
   oslo@1.2.0:
     resolution: {integrity: sha512-OoFX6rDsNcOQVAD2gQD/z03u4vEjWZLzJtwkmgfRF+KpQUXwdgEXErD7zNhyowmHwHefP+PM9Pw13pgpHMRlzw==}
 
@@ -5001,9 +4941,6 @@ packages:
   safe-stable-stringify@2.4.3:
     resolution: {integrity: sha512-e2bDA2WJT0wxseVd4lsDP4+3ONX6HpMXQa1ZhFQ7SU+GjvORCmShbCMltrtIDfkYhVHrOcPtj+KhmDBdPdZD1g==}
     engines: {node: '>=10'}
-
-  scenejs@1.10.3:
-    resolution: {integrity: sha512-o1Xrz5sRMeVOD5R9MizY2tYVPYeRnQNttiNRD7vtfi4j4+su1nuP2R/1yv3jDNol1zFfFHwwh2G0jxyt0SIqUA==}
 
   scheduler@0.23.2:
     resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
@@ -5804,10 +5741,6 @@ snapshots:
     dependencies:
       '@egjs/component': 3.0.5
 
-  '@cfcs/core@0.1.0':
-    dependencies:
-      '@egjs/component': 3.0.5
-
   '@colors/colors@1.6.0': {}
 
   '@cspotcode/source-map-support@0.8.1':
@@ -6296,10 +6229,6 @@ snapshots:
       resolve: 1.19.0
 
   '@microsoft/tsdoc@0.14.2': {}
-
-  '@moveable/helper@0.1.3':
-    dependencies:
-      '@daybrush/utils': 1.13.0
 
   '@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1':
     dependencies:
@@ -7347,34 +7276,6 @@ snapshots:
     dependencies:
       '@daybrush/utils': 1.13.0
 
-  '@scena/react-folder@0.9.3':
-    dependencies:
-      '@daybrush/utils': 1.13.0
-      framework-utils: 1.1.0
-      gesto: 1.19.4
-      keycon: 1.4.0
-      react-css-styled: 1.1.9
-
-  '@scena/react-guides@0.28.2':
-    dependencies:
-      '@daybrush/utils': 1.13.0
-      '@scena/dragscroll': 1.4.0
-      '@scena/react-ruler': 0.19.0
-      css-to-mat: 1.1.1
-      framework-utils: 1.1.0
-      gesto: 1.19.4
-      react-css-styled: 1.1.9
-
-  '@scena/react-ruler@0.19.0':
-    dependencies:
-      '@daybrush/utils': 1.13.0
-      framework-utils: 1.1.0
-
-  '@scena/react-store@0.2.1':
-    dependencies:
-      '@daybrush/utils': 1.13.0
-      '@scena/event-emitter': 1.0.5
-
   '@socket.io/component-emitter@3.1.2': {}
 
   '@swc/core-darwin-arm64@1.7.0':
@@ -7773,8 +7674,6 @@ snapshots:
       vite: 5.3.4(@types/node@20.14.11)
     transitivePeerDependencies:
       - '@swc/helpers'
-
-  '@webtoon/psd@0.4.0': {}
 
   abbrev@1.1.1: {}
 
@@ -9707,8 +9606,6 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  order-map@0.3.1: {}
-
   oslo@1.2.0:
     dependencies:
       '@node-rs/argon2': 1.7.0
@@ -10258,14 +10155,6 @@ snapshots:
       is-regex: 1.1.4
 
   safe-stable-stringify@2.4.3: {}
-
-  scenejs@1.10.3:
-    dependencies:
-      '@cfcs/core': 0.1.0
-      '@daybrush/utils': 1.13.0
-      '@scena/event-emitter': 1.0.5
-      css-styled: 1.0.8
-      order-map: 0.3.1
 
   scheduler@0.23.2:
     dependencies:
