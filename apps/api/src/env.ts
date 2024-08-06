@@ -6,6 +6,8 @@ const envSchama = z.object({
     JWT_TOKEN_EXPIRY: z.string(),
     REFRESH_TOKEN_EXPIRY: z.string(),
     REDIS_URL: z.string().url(),
+    GITHUB_CLIENT_ID: z.string(),
+    GITHUB_CLIENT_SECRET: z.string(),
 });
 
 export const env = envSchama.parse(process.env);

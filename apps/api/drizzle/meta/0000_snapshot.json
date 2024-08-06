@@ -1,5 +1,5 @@
 {
-  "id": "21c56177-83dc-4bc0-9586-b5313f457efa",
+  "id": "0ee1c50d-3895-4cb4-a15a-dcb66603f906",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -185,7 +185,7 @@
         },
         "provider_account_id": {
           "name": "provider_account_id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -193,17 +193,17 @@
           "name": "token_expiry",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "access_token": {
           "name": "access_token",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
         "refresh_token": {
           "name": "refresh_token",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -211,7 +211,8 @@
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
@@ -225,6 +226,13 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
+        },
+        "account_data": {
+          "name": "account_data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'null'::jsonb"
         }
       },
       "indexes": {},
@@ -243,7 +251,16 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "social_accounts_id_provider_provider_account_id_pk": {
+          "name": "social_accounts_id_provider_provider_account_id_pk",
+          "columns": [
+            "id",
+            "provider",
+            "provider_account_id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "public.black_listed_refresh_tokens": {
@@ -316,7 +333,11 @@
       "name": "supported_providers",
       "schema": "public",
       "values": [
-        "linkedin"
+        "linkedin",
+        "github",
+        "twitter",
+        "facebook",
+        "telegraph"
       ]
     }
   },

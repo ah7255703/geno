@@ -17,7 +17,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."supported_providers" AS ENUM('linkedin');
+ CREATE TYPE "public"."supported_providers" AS ENUM('linkedin', 'github', 'twitter', 'facebook', 'telegraph');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -50,13 +50,15 @@ CREATE TABLE IF NOT EXISTS "user" (
 CREATE TABLE IF NOT EXISTS "social_accounts" (
 	"id" serial NOT NULL,
 	"user_id" uuid NOT NULL,
-	"provider_account_id" uuid NOT NULL,
-	"token_expiry" timestamp NOT NULL,
-	"access_token" uuid NOT NULL,
-	"refresh_token" uuid,
-	"created_at" timestamp NOT NULL,
+	"provider_account_id" text NOT NULL,
+	"token_expiry" timestamp,
+	"access_token" text NOT NULL,
+	"refresh_token" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp NOT NULL,
-	"provider" "supported_providers" NOT NULL
+	"provider" "supported_providers" NOT NULL,
+	"account_data" jsonb DEFAULT 'null'::jsonb,
+	CONSTRAINT "social_accounts_id_provider_provider_account_id_pk" PRIMARY KEY("id","provider","provider_account_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "black_listed_refresh_tokens" (

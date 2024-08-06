@@ -40,27 +40,29 @@ declare module '@tanstack/react-router' {
 }
 const queryClient = new QueryClient();
 
+export function App() {
+    return <ThemeProvider defaultTheme='light' attribute='class'>
+        <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+                <Suspense fallback={"loading user data"}>
+                    <UserProvider>
+                        {({ user }) => {
+                            return <RouterProvider
+                                context={{ user }}
+                                router={router} />
+                        }}
+                    </UserProvider>
+                </Suspense>
+            </AuthProvider>
+        </QueryClientProvider>
+        <Toaster />
+    </ThemeProvider>
+}
+
+
 // Render the app
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement);
-    root.render(
-        <ThemeProvider defaultTheme='light' attribute='class'>
-            <QueryClientProvider client={queryClient}>
-                <AuthProvider>
-                    <Suspense fallback={"loading user data"}>
-                        <UserProvider>
-                            {({ user }) => {
-                                return <RouterProvider
-                                    context={{ user }}
-                                    router={router} />
-                            }}
-                        </UserProvider>
-                    </Suspense>
-                </AuthProvider>
-            </QueryClientProvider>
-            <Toaster />
-        </ThemeProvider>
-        ,
-    )
+    root.render(<App />);
 }

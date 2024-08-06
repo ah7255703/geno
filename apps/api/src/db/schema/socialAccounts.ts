@@ -1,23 +1,34 @@
-import { pgEnum, pgTable, serial, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, serial, timestamp, uuid, text, jsonb, primaryKey } from "drizzle-orm/pg-core";
 import { usersTable } from "./user";
 import { relations } from "drizzle-orm";
+import { GithubUser } from "src/providers/types/github";
+import { TelegraphAccount } from "src/providers/Telegraph";
 
-export const supportedProvider = pgEnum("supported_providers", [
+export const supportedProvider = [
     "linkedin",
-])
+    "github",
+    "twitter",
+    "facebook",
+    "telegraph"
+] as const;
+
+export const supportedProviders = pgEnum("supported_providers", supportedProvider)
 
 export const socialAccountsTable = pgTable('social_accounts', {
     id: serial('id'),
     userId: uuid("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
-    providerUserId: uuid("provider_account_id").notNull(),
-    tokenExpiry: timestamp("token_expiry").notNull(),
-    accessToken: uuid("access_token").notNull(),
-    refreshToken: uuid("refresh_token"),
-    createdAt: timestamp("created_at").notNull(),
+    providerUserId: text("provider_account_id").notNull(),
+    tokenExpiry: timestamp("token_expiry"),
+    accessToken: text("access_token").notNull(),
+    refreshToken: text("refresh_token"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").notNull().$onUpdate(() => new Date()),
-    provider: supportedProvider("provider").notNull(),
-});
+    provider: supportedProviders("provider").notNull(),
+    accountData: jsonb("account_data").$type<GithubUser | TelegraphAccount | null>().default(null),
+}, (table) => ({
+    pk: primaryKey({ columns: [table.id, table.provider, table.providerUserId] }),
+}));
 
-export const socialAccountsRelations = relations(socialAccountsTable, ({one,many})=>({
+export const socialAccountsRelations = relations(socialAccountsTable, ({ one, many }) => ({
     user: one(usersTable),
 }))

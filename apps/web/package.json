@@ -46,9 +46,11 @@
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.1.7",
+    "framer-motion": "^11.3.21",
     "hono": "^4.5.1",
     "immer": "^10.1.1",
     "input-otp": "^1.2.4",
+    "jotai": "^2.9.1",
     "lucide-react": "^0.412.0",
     "next-themes": "^0.3.0",
     "nprogress": "^0.2.0",
@@ -71,6 +73,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@icons-pack/react-simple-icons": "^9.6.0",
     "@tanstack/router-devtools": "^1.45.7",
     "@tanstack/router-plugin": "^1.45.7",
     "@types/node": "^20.14.11",
@@ -79,7 +82,7 @@
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
     "@typescript-eslint/parser": "^7.16.1",
-    "@vitejs/plugin-react-swc": "^3.7.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "eslint": "^9.7.0",
     "eslint-plugin-react-hooks": "^4.6.2",

@@ -118,7 +118,7 @@ function AppearanceForm() {
   )
 }
 
-export const Route = createFileRoute('/(authenticated)/_layout-settings/settings/apperance')({
+export const Route = createFileRoute('/(authenticated)/_layout-auth/_layout-settings/settings/apperance')({
   component: () => <div className="space-y-6">
     <div>
       <h3 className="text-lg font-medium">

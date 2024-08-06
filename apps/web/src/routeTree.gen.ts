@@ -15,14 +15,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthIndexImport } from './routes/auth/index'
 import { Route as AuthRegisterImport } from './routes/auth/register'
-import { Route as authenticatedLayoutSettingsImport } from './routes/(authenticated)/_layout-settings'
-import { Route as authenticatedLayout2Import } from './routes/(authenticated)/_layout-2'
-import { Route as authenticatedLayout2IndexImport } from './routes/(authenticated)/_layout-2/index'
-import { Route as authenticatedLayoutSettingsSettingsIndexImport } from './routes/(authenticated)/_layout-settings/settings/index'
-import { Route as authenticatedLayoutSettingsSettingsSocialAccountsImport } from './routes/(authenticated)/_layout-settings/settings/social-accounts'
-import { Route as authenticatedLayoutSettingsSettingsProfileImport } from './routes/(authenticated)/_layout-settings/settings/profile'
-import { Route as authenticatedLayoutSettingsSettingsGeneralImport } from './routes/(authenticated)/_layout-settings/settings/general'
-import { Route as authenticatedLayoutSettingsSettingsApperanceImport } from './routes/(authenticated)/_layout-settings/settings/apperance'
+import { Route as authenticatedLayoutAuthImport } from './routes/(authenticated)/_layout-auth'
+import { Route as authenticatedLayoutAuthIndexImport } from './routes/(authenticated)/_layout-auth/index'
+import { Route as authenticatedLayoutAuthLayoutSettingsImport } from './routes/(authenticated)/_layout-auth/_layout-settings'
+import { Route as authenticatedLayoutAuthLayoutSettingsSettingsIndexImport } from './routes/(authenticated)/_layout-auth/_layout-settings/settings/index'
+import { Route as authenticatedLayoutAuthLayoutSettingsSettingsSocialAccountsImport } from './routes/(authenticated)/_layout-auth/_layout-settings/settings/social-accounts'
+import { Route as authenticatedLayoutAuthLayoutSettingsSettingsApperanceImport } from './routes/(authenticated)/_layout-auth/_layout-settings/settings/apperance'
 
 // Create Virtual Routes
 
@@ -45,50 +43,39 @@ const AuthRegisterRoute = AuthRegisterImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const authenticatedLayoutSettingsRoute =
-  authenticatedLayoutSettingsImport.update({
-    id: '/_layout-settings',
-    getParentRoute: () => authenticatedRoute,
-  } as any)
-
-const authenticatedLayout2Route = authenticatedLayout2Import.update({
-  id: '/_layout-2',
+const authenticatedLayoutAuthRoute = authenticatedLayoutAuthImport.update({
+  id: '/_layout-auth',
   getParentRoute: () => authenticatedRoute,
 } as any)
 
-const authenticatedLayout2IndexRoute = authenticatedLayout2IndexImport.update({
-  path: '/',
-  getParentRoute: () => authenticatedLayout2Route,
-} as any)
+const authenticatedLayoutAuthIndexRoute =
+  authenticatedLayoutAuthIndexImport.update({
+    path: '/',
+    getParentRoute: () => authenticatedLayoutAuthRoute,
+  } as any)
 
-const authenticatedLayoutSettingsSettingsIndexRoute =
-  authenticatedLayoutSettingsSettingsIndexImport.update({
+const authenticatedLayoutAuthLayoutSettingsRoute =
+  authenticatedLayoutAuthLayoutSettingsImport.update({
+    id: '/_layout-settings',
+    getParentRoute: () => authenticatedLayoutAuthRoute,
+  } as any)
+
+const authenticatedLayoutAuthLayoutSettingsSettingsIndexRoute =
+  authenticatedLayoutAuthLayoutSettingsSettingsIndexImport.update({
     path: '/settings/',
-    getParentRoute: () => authenticatedLayoutSettingsRoute,
+    getParentRoute: () => authenticatedLayoutAuthLayoutSettingsRoute,
   } as any)
 
-const authenticatedLayoutSettingsSettingsSocialAccountsRoute =
-  authenticatedLayoutSettingsSettingsSocialAccountsImport.update({
+const authenticatedLayoutAuthLayoutSettingsSettingsSocialAccountsRoute =
+  authenticatedLayoutAuthLayoutSettingsSettingsSocialAccountsImport.update({
     path: '/settings/social-accounts',
-    getParentRoute: () => authenticatedLayoutSettingsRoute,
+    getParentRoute: () => authenticatedLayoutAuthLayoutSettingsRoute,
   } as any)
 
-const authenticatedLayoutSettingsSettingsProfileRoute =
-  authenticatedLayoutSettingsSettingsProfileImport.update({
-    path: '/settings/profile',
-    getParentRoute: () => authenticatedLayoutSettingsRoute,
-  } as any)
-
-const authenticatedLayoutSettingsSettingsGeneralRoute =
-  authenticatedLayoutSettingsSettingsGeneralImport.update({
-    path: '/settings/general',
-    getParentRoute: () => authenticatedLayoutSettingsRoute,
-  } as any)
-
-const authenticatedLayoutSettingsSettingsApperanceRoute =
-  authenticatedLayoutSettingsSettingsApperanceImport.update({
+const authenticatedLayoutAuthLayoutSettingsSettingsApperanceRoute =
+  authenticatedLayoutAuthLayoutSettingsSettingsApperanceImport.update({
     path: '/settings/apperance',
-    getParentRoute: () => authenticatedLayoutSettingsRoute,
+    getParentRoute: () => authenticatedLayoutAuthLayoutSettingsRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -102,19 +89,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedImport
       parentRoute: typeof rootRoute
     }
-    '/(authenticated)/_layout-2': {
-      id: '/_layout-2'
+    '/(authenticated)/_layout-auth': {
+      id: '/_layout-auth'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof authenticatedLayout2Import
+      preLoaderRoute: typeof authenticatedLayoutAuthImport
       parentRoute: typeof authenticatedRoute
-    }
-    '/(authenticated)/_layout-settings': {
-      id: '/_layout-settings'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof authenticatedLayoutSettingsImport
-      parentRoute: typeof authenticatedImport
     }
     '/auth/register': {
       id: '/auth/register'
@@ -130,47 +110,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexImport
       parentRoute: typeof rootRoute
     }
-    '/(authenticated)/_layout-2/': {
-      id: '/_layout-2/'
+    '/(authenticated)/_layout-auth/_layout-settings': {
+      id: '/_layout-auth/_layout-settings'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authenticatedLayoutAuthLayoutSettingsImport
+      parentRoute: typeof authenticatedLayoutAuthImport
+    }
+    '/(authenticated)/_layout-auth/': {
+      id: '/_layout-auth/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof authenticatedLayout2IndexImport
-      parentRoute: typeof authenticatedLayout2Import
+      preLoaderRoute: typeof authenticatedLayoutAuthIndexImport
+      parentRoute: typeof authenticatedLayoutAuthImport
     }
-    '/(authenticated)/_layout-settings/settings/apperance': {
-      id: '/_layout-settings/settings/apperance'
+    '/(authenticated)/_layout-auth/_layout-settings/settings/apperance': {
+      id: '/_layout-auth/_layout-settings/settings/apperance'
       path: '/settings/apperance'
       fullPath: '/settings/apperance'
-      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsApperanceImport
-      parentRoute: typeof authenticatedLayoutSettingsImport
+      preLoaderRoute: typeof authenticatedLayoutAuthLayoutSettingsSettingsApperanceImport
+      parentRoute: typeof authenticatedLayoutAuthLayoutSettingsImport
     }
-    '/(authenticated)/_layout-settings/settings/general': {
-      id: '/_layout-settings/settings/general'
-      path: '/settings/general'
-      fullPath: '/settings/general'
-      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsGeneralImport
-      parentRoute: typeof authenticatedLayoutSettingsImport
-    }
-    '/(authenticated)/_layout-settings/settings/profile': {
-      id: '/_layout-settings/settings/profile'
-      path: '/settings/profile'
-      fullPath: '/settings/profile'
-      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsProfileImport
-      parentRoute: typeof authenticatedLayoutSettingsImport
-    }
-    '/(authenticated)/_layout-settings/settings/social-accounts': {
-      id: '/_layout-settings/settings/social-accounts'
+    '/(authenticated)/_layout-auth/_layout-settings/settings/social-accounts': {
+      id: '/_layout-auth/_layout-settings/settings/social-accounts'
       path: '/settings/social-accounts'
       fullPath: '/settings/social-accounts'
-      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsSocialAccountsImport
-      parentRoute: typeof authenticatedLayoutSettingsImport
+      preLoaderRoute: typeof authenticatedLayoutAuthLayoutSettingsSettingsSocialAccountsImport
+      parentRoute: typeof authenticatedLayoutAuthLayoutSettingsImport
     }
-    '/(authenticated)/_layout-settings/settings/': {
-      id: '/_layout-settings/settings/'
+    '/(authenticated)/_layout-auth/_layout-settings/settings/': {
+      id: '/_layout-auth/_layout-settings/settings/'
       path: '/settings'
       fullPath: '/settings'
-      preLoaderRoute: typeof authenticatedLayoutSettingsSettingsIndexImport
-      parentRoute: typeof authenticatedLayoutSettingsImport
+      preLoaderRoute: typeof authenticatedLayoutAuthLayoutSettingsSettingsIndexImport
+      parentRoute: typeof authenticatedLayoutAuthLayoutSettingsImport
     }
   }
 }
@@ -179,17 +152,15 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   authenticatedRoute: authenticatedRoute.addChildren({
-    authenticatedLayout2Route: authenticatedLayout2Route.addChildren({
-      authenticatedLayout2IndexRoute,
+    authenticatedLayoutAuthRoute: authenticatedLayoutAuthRoute.addChildren({
+      authenticatedLayoutAuthLayoutSettingsRoute:
+        authenticatedLayoutAuthLayoutSettingsRoute.addChildren({
+          authenticatedLayoutAuthLayoutSettingsSettingsApperanceRoute,
+          authenticatedLayoutAuthLayoutSettingsSettingsSocialAccountsRoute,
+          authenticatedLayoutAuthLayoutSettingsSettingsIndexRoute,
+        }),
+      authenticatedLayoutAuthIndexRoute,
     }),
-    authenticatedLayoutSettingsRoute:
-      authenticatedLayoutSettingsRoute.addChildren({
-        authenticatedLayoutSettingsSettingsApperanceRoute,
-        authenticatedLayoutSettingsSettingsGeneralRoute,
-        authenticatedLayoutSettingsSettingsProfileRoute,
-        authenticatedLayoutSettingsSettingsSocialAccountsRoute,
-        authenticatedLayoutSettingsSettingsIndexRoute,
-      }),
   }),
   AuthRegisterRoute,
   AuthIndexRoute,
@@ -211,26 +182,15 @@ export const routeTree = rootRoute.addChildren({
     "/": {
       "filePath": "(authenticated)",
       "children": [
-        "/_layout-2",
-        "/_layout-settings"
+        "/_layout-auth"
       ]
     },
-    "/_layout-2": {
-      "filePath": "(authenticated)/_layout-2.tsx",
+    "/_layout-auth": {
+      "filePath": "(authenticated)/_layout-auth.tsx",
       "parent": "/",
       "children": [
-        "/_layout-2/"
-      ]
-    },
-    "/_layout-settings": {
-      "filePath": "(authenticated)/_layout-settings.tsx",
-      "parent": "/",
-      "children": [
-        "/_layout-settings/settings/apperance",
-        "/_layout-settings/settings/general",
-        "/_layout-settings/settings/profile",
-        "/_layout-settings/settings/social-accounts",
-        "/_layout-settings/settings/"
+        "/_layout-auth/_layout-settings",
+        "/_layout-auth/"
       ]
     },
     "/auth/register": {
@@ -239,29 +199,30 @@ export const routeTree = rootRoute.addChildren({
     "/auth/": {
       "filePath": "auth/index.tsx"
     },
-    "/_layout-2/": {
-      "filePath": "(authenticated)/_layout-2/index.tsx",
-      "parent": "/_layout-2"
+    "/_layout-auth/_layout-settings": {
+      "filePath": "(authenticated)/_layout-auth/_layout-settings.tsx",
+      "parent": "/_layout-auth",
+      "children": [
+        "/_layout-auth/_layout-settings/settings/apperance",
+        "/_layout-auth/_layout-settings/settings/social-accounts",
+        "/_layout-auth/_layout-settings/settings/"
+      ]
     },
-    "/_layout-settings/settings/apperance": {
-      "filePath": "(authenticated)/_layout-settings/settings/apperance.tsx",
-      "parent": "/_layout-settings"
+    "/_layout-auth/": {
+      "filePath": "(authenticated)/_layout-auth/index.tsx",
+      "parent": "/_layout-auth"
     },
-    "/_layout-settings/settings/general": {
-      "filePath": "(authenticated)/_layout-settings/settings/general.tsx",
-      "parent": "/_layout-settings"
+    "/_layout-auth/_layout-settings/settings/apperance": {
+      "filePath": "(authenticated)/_layout-auth/_layout-settings/settings/apperance.tsx",
+      "parent": "/_layout-auth/_layout-settings"
     },
-    "/_layout-settings/settings/profile": {
-      "filePath": "(authenticated)/_layout-settings/settings/profile.tsx",
-      "parent": "/_layout-settings"
+    "/_layout-auth/_layout-settings/settings/social-accounts": {
+      "filePath": "(authenticated)/_layout-auth/_layout-settings/settings/social-accounts.tsx",
+      "parent": "/_layout-auth/_layout-settings"
     },
-    "/_layout-settings/settings/social-accounts": {
-      "filePath": "(authenticated)/_layout-settings/settings/social-accounts.tsx",
-      "parent": "/_layout-settings"
-    },
-    "/_layout-settings/settings/": {
-      "filePath": "(authenticated)/_layout-settings/settings/index.tsx",
-      "parent": "/_layout-settings"
+    "/_layout-auth/_layout-settings/settings/": {
+      "filePath": "(authenticated)/_layout-auth/_layout-settings/settings/index.tsx",
+      "parent": "/_layout-auth/_layout-settings"
     }
   }
 }
