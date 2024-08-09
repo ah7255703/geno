@@ -17,6 +17,7 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { useDropzone } from 'react-dropzone'
 import { XIcon } from 'lucide-react';
+import { BlockEditor } from '@/components/textEditor/components/BlockEditor';
 
 const validation = z.object({
   title: z.string().min(1),
@@ -154,7 +155,8 @@ export function CreateArticleSegmentComponent() {
             />
           </div>
           <div>
-
+            <BlockEditor
+            />
           </div>
         </main>
       </form>
