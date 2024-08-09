@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@files-ui/react": "^1.2.4",
     "@fontsource-variable/noto-sans": "^5.0.5",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -51,6 +52,7 @@
     "immer": "^10.1.1",
     "input-otp": "^1.2.4",
     "jotai": "^2.9.1",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.412.0",
     "next-themes": "^0.3.0",
     "nprogress": "^0.2.0",

@@ -19,6 +19,27 @@ services:
       - "5432:5432"
     networks:
       - app_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  storage:
+    image: minio/minio
+    container_name: storage
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: root
+      MINIO_ROOT_PASSWORD: rootpassword
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - app_network
+    volumes:
+      - storage_data:/data
+
+volumes:
+  postgres_data:
+  storage_data:
 
 networks:
   app_network:

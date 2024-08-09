@@ -14,28 +14,35 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { useTheme } from 'next-themes'
+import { client } from '@/honoClient'
+import { toast } from 'sonner'
 
 const appearanceFormSchema = z.object({
   theme: z.enum(["light", "dark"], {
     required_error: "Please select a theme.",
-  })
+  }).optional(),
 })
 
 type AppearanceFormValues = z.infer<typeof appearanceFormSchema>
 
-const defaultValues: Partial<AppearanceFormValues> = {
-  theme: "light",
-}
-
 
 function AppearanceForm() {
+  const theme = useTheme()
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
-    defaultValues,
+    defaultValues: {
+      theme: theme.theme as AppearanceFormValues['theme']
+    }
   })
 
-  function onSubmit(data: AppearanceFormValues) {
-
+  async function onSubmit(data: AppearanceFormValues) {
+    data.theme && theme.setTheme(data.theme)
+   toast.promise(client.private.user.settings.$post({
+      json: {
+        theme: data.theme
+      }
+    }))
   }
 
   return (
@@ -112,7 +119,11 @@ function AppearanceForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className='ms-auto block' >Update preferences</Button>
+        <Button
+          type="submit"
+          className='ms-auto block'
+          disabled={form.formState.isSubmitting || !form.formState.isDirty}
+        >Update preferences</Button>
       </form>
     </Form>
   )

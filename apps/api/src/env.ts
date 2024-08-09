@@ -8,6 +8,9 @@ const envSchama = z.object({
     REDIS_URL: z.string().url(),
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
+    MINIO_ACCESS_KEY: z.string(),
+    MINIO_SECRET_KEY: z.string(),
+    MINIO_ENDPOINT: z.string().url(),
 });
 
 export const env = envSchama.parse(process.env);

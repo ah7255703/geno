@@ -14,9 +14,11 @@ import { eq } from 'drizzle-orm';
 import { userRoutes } from './routes/user.js';
 import _ from 'lodash';
 import { providerPrivateRoutes, providerPublicRoutes } from './routes/providers.js';
+import { filesRoutes, initBuckets } from './routes/files.js';
 
 async function preStart() {
-    RedisonStart()
+    RedisonStart();
+    initBuckets()
 }
 
 declare module "hono" {
@@ -69,7 +71,7 @@ publicApp.use("/private/*", async (_ctx, next) => {
 const privateApp = new Hono()
     .route('/user', userRoutes)
     .route("/providers", providerPrivateRoutes)
-
+    .route("/files", filesRoutes)
 
 const allRoutes =
     publicApp.route("/auth", authRoutes)
