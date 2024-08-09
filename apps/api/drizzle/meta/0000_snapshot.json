@@ -1,5 +1,5 @@
 {
-  "id": "4e28dc27-fa12-42d4-b6c2-0908ac368133",
+  "id": "6b7f5434-1600-4542-b6dd-413186a280dc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -392,6 +392,19 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "show_order": {
+          "name": "show_order",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "visible": {
+          "name": "visible",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
         }
       },
       "indexes": {},
@@ -432,6 +445,82 @@
           ]
         }
       },
+      "uniqueConstraints": {}
+    },
+    "public.article_publish": {
+      "name": "article_publish",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "article_id": {
+          "name": "article_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "published": {
+          "name": "published",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "published_url": {
+          "name": "published_url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "published_provider": {
+          "name": "published_provider",
+          "type": "supported_providers",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "published_provider_id": {
+          "name": "published_provider_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "published_provider_data": {
+          "name": "published_provider_data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "article_publish_article_id_articles_id_fk": {
+          "name": "article_publish_article_id_articles_id_fk",
+          "tableFrom": "article_publish",
+          "tableTo": "articles",
+          "columnsFrom": [
+            "article_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "public.articles": {

@@ -28,6 +28,10 @@ const appLinks: {
     {
       to: "/settings",
       label: "Settings"
+    },
+    {
+      to: "/articles",
+      label: "Articles"
     }
   ]
 
@@ -105,7 +109,7 @@ function Header() {
   </>
 }
 
-export function SettingsLayout() {
+export function AuthLayout() {
   return <div>
     <Header />
     <Outlet />
@@ -119,5 +123,5 @@ export const Route = createFileRoute('/(authenticated)/_layout-auth')({
       return redirect({ to: "/auth" })
     }
   },
-  component: SettingsLayout
+  component: AuthLayout
 })

@@ -1,5 +1,5 @@
 import { db } from "@db/index";
-import { socialAccountsTable, supportedProvider } from "@db/schema";
+import { socialAccountsTable, supportedProviders } from "@db/schema";
 import { zValidator } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
@@ -37,7 +37,7 @@ const providerPrivateRoutes = new Hono()
             ),
         }).execute();
 
-        let availableProviders = supportedProvider.map(provider => ({
+        let availableProviders = supportedProviders.map(provider => ({
             provider,
             available: !providers.some(p => p.provider === provider)
         }))

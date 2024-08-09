@@ -80,7 +80,20 @@ CREATE TABLE IF NOT EXISTS "files" (
 CREATE TABLE IF NOT EXISTS "article_files" (
 	"article_id" uuid NOT NULL,
 	"file_id" varchar NOT NULL,
+	"show_order" serial NOT NULL,
+	"visible" boolean DEFAULT true NOT NULL,
 	CONSTRAINT "article_files_article_id_file_id_pk" PRIMARY KEY("article_id","file_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "article_publish" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"article_id" uuid NOT NULL,
+	"published_at" timestamp DEFAULT now() NOT NULL,
+	"published" boolean DEFAULT false NOT NULL,
+	"published_url" varchar NOT NULL,
+	"published_provider" "supported_providers" NOT NULL,
+	"published_provider_id" varchar NOT NULL,
+	"published_provider_data" jsonb NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "articles" (
@@ -124,6 +137,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "article_files" ADD CONSTRAINT "article_files_file_id_files_key_fk" FOREIGN KEY ("file_id") REFERENCES "public"."files"("key") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "article_publish" ADD CONSTRAINT "article_publish_article_id_articles_id_fk" FOREIGN KEY ("article_id") REFERENCES "public"."articles"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

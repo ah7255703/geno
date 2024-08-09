@@ -24,6 +24,7 @@ const buttonVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "size-9",
+        xicon: "size-7",
       },
     },
     defaultVariants: {
@@ -45,6 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
+        type={type}
         ref={ref}
         {...props}
       />

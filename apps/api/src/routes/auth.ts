@@ -23,7 +23,7 @@ export const authRoutes = new Hono()
             where: eq(usersTable.email, data.email)
         }).execute();
         if (doesExist) {
-            return _ctx.json({ error: "Email already exists" })
+            return _ctx.json({ error: "Email already exists" }, 400)
         }
         let hashedPassword = await hash(data.password, rounds)
 

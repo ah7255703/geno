@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const loginValidation = z.object({
@@ -25,13 +26,19 @@ function LoginCard() {
     mutationFn: client.auth['email-password'].login.$post,
   })
 
-  async function handleSubmit(data: z.infer<typeof loginValidation>) {
+  async function handleSubmit(_data: z.infer<typeof loginValidation>) {
     let res = await login.mutateAsync({
-      json: data,
+      json: _data,
     });
-    if (res.ok) {
-      let data = await res.json();
+
+    let data = await res.json();
+    if (res.status === 200 && "accessToken" in data) {
       logintheuser(data);
+      toast.success("Logged in successfully");
+      return;
+    }
+    if (res.status === 404 && "error" in data) {
+      toast.error(data.error);
     }
   }
 

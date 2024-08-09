@@ -18,6 +18,8 @@ import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as authenticatedLayoutAuthImport } from './routes/(authenticated)/_layout-auth'
 import { Route as authenticatedLayoutAuthIndexImport } from './routes/(authenticated)/_layout-auth/index'
 import { Route as authenticatedLayoutAuthLayoutSettingsImport } from './routes/(authenticated)/_layout-auth/_layout-settings'
+import { Route as authenticatedLayoutAuthArticlesIndexImport } from './routes/(authenticated)/_layout-auth/articles/index'
+import { Route as authenticatedLayoutAuthArticlesCreateArticleImport } from './routes/(authenticated)/_layout-auth/articles/create-article'
 import { Route as authenticatedLayoutAuthLayoutSettingsSettingsIndexImport } from './routes/(authenticated)/_layout-auth/_layout-settings/settings/index'
 import { Route as authenticatedLayoutAuthLayoutSettingsSettingsSocialAccountsImport } from './routes/(authenticated)/_layout-auth/_layout-settings/settings/social-accounts'
 import { Route as authenticatedLayoutAuthLayoutSettingsSettingsApperanceImport } from './routes/(authenticated)/_layout-auth/_layout-settings/settings/apperance'
@@ -57,6 +59,18 @@ const authenticatedLayoutAuthIndexRoute =
 const authenticatedLayoutAuthLayoutSettingsRoute =
   authenticatedLayoutAuthLayoutSettingsImport.update({
     id: '/_layout-settings',
+    getParentRoute: () => authenticatedLayoutAuthRoute,
+  } as any)
+
+const authenticatedLayoutAuthArticlesIndexRoute =
+  authenticatedLayoutAuthArticlesIndexImport.update({
+    path: '/articles/',
+    getParentRoute: () => authenticatedLayoutAuthRoute,
+  } as any)
+
+const authenticatedLayoutAuthArticlesCreateArticleRoute =
+  authenticatedLayoutAuthArticlesCreateArticleImport.update({
+    path: '/articles/create-article',
     getParentRoute: () => authenticatedLayoutAuthRoute,
   } as any)
 
@@ -124,6 +138,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedLayoutAuthIndexImport
       parentRoute: typeof authenticatedLayoutAuthImport
     }
+    '/(authenticated)/_layout-auth/articles/create-article': {
+      id: '/_layout-auth/articles/create-article'
+      path: '/articles/create-article'
+      fullPath: '/articles/create-article'
+      preLoaderRoute: typeof authenticatedLayoutAuthArticlesCreateArticleImport
+      parentRoute: typeof authenticatedLayoutAuthImport
+    }
+    '/(authenticated)/_layout-auth/articles/': {
+      id: '/_layout-auth/articles/'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof authenticatedLayoutAuthArticlesIndexImport
+      parentRoute: typeof authenticatedLayoutAuthImport
+    }
     '/(authenticated)/_layout-auth/_layout-settings/settings/apperance': {
       id: '/_layout-auth/_layout-settings/settings/apperance'
       path: '/settings/apperance'
@@ -160,6 +188,8 @@ export const routeTree = rootRoute.addChildren({
           authenticatedLayoutAuthLayoutSettingsSettingsIndexRoute,
         }),
       authenticatedLayoutAuthIndexRoute,
+      authenticatedLayoutAuthArticlesCreateArticleRoute,
+      authenticatedLayoutAuthArticlesIndexRoute,
     }),
   }),
   AuthRegisterRoute,
@@ -190,7 +220,9 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/",
       "children": [
         "/_layout-auth/_layout-settings",
-        "/_layout-auth/"
+        "/_layout-auth/",
+        "/_layout-auth/articles/create-article",
+        "/_layout-auth/articles/"
       ]
     },
     "/auth/register": {
@@ -210,6 +242,14 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout-auth/": {
       "filePath": "(authenticated)/_layout-auth/index.tsx",
+      "parent": "/_layout-auth"
+    },
+    "/_layout-auth/articles/create-article": {
+      "filePath": "(authenticated)/_layout-auth/articles/create-article.tsx",
+      "parent": "/_layout-auth"
+    },
+    "/_layout-auth/articles/": {
+      "filePath": "(authenticated)/_layout-auth/articles/index.tsx",
       "parent": "/_layout-auth"
     },
     "/_layout-auth/_layout-settings/settings/apperance": {

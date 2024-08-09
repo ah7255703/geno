@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Field, Form } from '@/components/ui/form'
 import { useMutation } from '@tanstack/react-query'
 import { client } from '@/honoClient';
+import { toast } from 'sonner'
+import { AlertTriangle } from 'lucide-react'
 
 const registerValidation = z.object({
   email: z.string().email(),
@@ -24,12 +26,22 @@ function RegisterCard() {
     mutationFn: client.auth['email-password'].register.$post,
   })
 
-  async function handleSubmit(data: z.infer<typeof registerValidation>) {
+  async function handleSubmit(_data: z.infer<typeof registerValidation>) {
+    form.setError("root", {})
     try {
       let res = await register.mutateAsync({
-        json: data
+        json: _data
       });
-      console.log(res)
+      const data = await res.json()
+      if (res.status === 200) {
+        toast.success("Account created successfully")
+      }
+      else if (res.status === 400 && "error" in data) {
+        toast.error(data.error);
+        form.setError("root", {
+          message: data.error
+        })
+      }
     } catch (error) {
       console.error(error)
     }
@@ -41,6 +53,13 @@ function RegisterCard() {
         <CardDescription>
           Enter your email and password to create an account
         </CardDescription>
+        <CardDescription hidden={!form.formState.errors.root} className='bg-destructive text-card-foreground p-2 rounded-lg flex items-center gap-2'>
+          <AlertTriangle className='size-4' />
+          <span>{
+            form.formState.errors.root?.message
+          }</span>
+        </CardDescription>
+
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -73,7 +92,7 @@ function RegisterCard() {
             </div>
             <div className="mt-4 text-center text-sm">
               already have an account?{" "}
-              <Link to="/auth/" className="underline">
+              <Link to="/auth" className="underline">
                 Login
               </Link>
             </div>

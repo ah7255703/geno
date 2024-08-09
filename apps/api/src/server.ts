@@ -16,6 +16,7 @@ import _ from 'lodash';
 import { providerPrivateRoutes, providerPublicRoutes } from './routes/providers.js';
 import { filesRoutes } from './routes/files.js';
 import { initBuckets } from './storage/index.js';
+import { articlesRoutes } from './routes/articles.js';
 
 async function preStart() {
     RedisonStart();
@@ -26,6 +27,7 @@ declare module "hono" {
     interface ContextVariableMap {
         jwtPayload: z.infer<typeof jwtAuth.schema> | null;
         user: Omit<typeof usersTable.$inferSelect, 'password'> | null;
+        sessionId: string | null;
     }
 }
 
@@ -38,6 +40,10 @@ publicApp.use(logger())
 
 publicApp.use(async (_ctx, next) => {
     let authHeader = _ctx.req.header("Authorization")
+    let sessionId = _ctx.req.header("X-Session-Id")
+    if (sessionId) {
+        _ctx.set("sessionId", sessionId)
+    }
     if (authHeader && authHeader.startsWith(jwtAuth.authorization)) {
         let token = authHeader.split(" ")[1].trim();
         if (token) {
@@ -52,6 +58,7 @@ publicApp.use(async (_ctx, next) => {
     }
     await next()
 })
+
 publicApp.use("/private/*", async (_ctx, next) => {
     let jwtPayload = _ctx.get("jwtPayload")
     if (!jwtPayload) {
@@ -76,6 +83,7 @@ const privateApp = new Hono()
     .route('/user', userRoutes)
     .route("/providers", providerPrivateRoutes)
     .route("/files", filesRoutes)
+    .route("/articles", articlesRoutes)
 
 const allRoutes =
     publicApp.route("/auth", authRoutes)

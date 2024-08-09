@@ -19,12 +19,18 @@ type SharedData = {
 const [SafeProvider, useUser] = createSafeProvider<SharedData>();
 
 function UserProvider({ children }: { children: ((data: SharedData) => React.ReactNode) }) {
-    const { tokens } = useAuthContext();
+    const { tokens, logout } = useAuthContext();
 
     const { data, isLoading } = useSuspenseQuery({
         queryKey: [tokens],
         queryFn: async () => {
             let da = await client.private.user.me.$get();
+            if (da.status === 401) {
+                if (tokens) {
+                    logout()
+                }
+                return null;
+            }
             return da.json();
         },
         refetchInterval: 0,

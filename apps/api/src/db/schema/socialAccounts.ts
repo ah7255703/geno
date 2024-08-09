@@ -4,7 +4,7 @@ import { relations } from "drizzle-orm";
 import { GithubUser } from "src/providers/types/github";
 import { TelegraphAccount } from "src/providers/Telegraph";
 
-export const supportedProvider = [
+export const supportedProviders = [
     "linkedin",
     "github",
     "twitter",
@@ -12,7 +12,7 @@ export const supportedProvider = [
     "telegraph"
 ] as const;
 
-export const supportedProviders = pgEnum("supported_providers", supportedProvider)
+export const supportedProvidersEnum = pgEnum("supported_providers", supportedProviders)
 
 export const socialAccountsTable = pgTable('social_accounts', {
     id: serial('id'),
@@ -23,7 +23,7 @@ export const socialAccountsTable = pgTable('social_accounts', {
     refreshToken: text("refresh_token"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").notNull().$onUpdate(() => new Date()),
-    provider: supportedProviders("provider").notNull(),
+    provider: supportedProvidersEnum("provider").notNull(),
     accountData: jsonb("account_data").$type<GithubUser | TelegraphAccount | null>().default(null),
 }, (table) => ({
     pk: primaryKey({ columns: [table.id, table.provider, table.providerUserId] }),

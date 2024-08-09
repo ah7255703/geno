@@ -27,6 +27,19 @@ function typedStorage<TData>(_storage: StorageType) {
     };
 }
 
+export function typedStorageWithKey<TData>(_storage: StorageType, key: string) {
+    const storage = typedStorage<TData>(_storage);
+    return {
+        ...storage,
+        getItem() {
+            return storage.getItem(key);
+        },
+        setItem(value: TData | null) {
+            storage.setItem(key, value);
+        },
+    };
+}
+
 function useSyncedState<TData = any>(key: string, defaultValue: TData | null = null, storage?: ReturnType<typeof typedStorage<TData>>) {
     const storageRef = useRef(storage ?? typedStorage<TData>("local"));
 

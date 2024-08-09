@@ -12,7 +12,8 @@ import { ThemeProvider } from 'next-themes';
 import { Toaster } from './components/ui/sonner';
 import { AuthProvider } from './providers/AuthProvider';
 import { UserProvider } from './providers/UserProvider';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
+import { setAppSession } from './hooks/appSession';
 
 let np = NProgress.configure({ showSpinner: false, parent: "body", easing: 'ease' });
 
@@ -41,6 +42,9 @@ declare module '@tanstack/react-router' {
 const queryClient = new QueryClient();
 
 export function App() {
+    useEffect(() => {
+        setAppSession()
+    }, [])
     return <ThemeProvider defaultTheme='light' attribute='class'>
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
