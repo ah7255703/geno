@@ -55,8 +55,8 @@ export const authRoutes = new Hono()
             return _ctx.json({ error: "Incorrect password" }, 401)
         }
 
-        let accessToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: "1d" });
-        let refreshToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: "7d" });
+        let accessToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_TOKEN_EXPIRY });
+        let refreshToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.REFRESH_TOKEN_EXPIRY });
 
         return _ctx.json({ accessToken, refreshToken })
     })
@@ -68,13 +68,13 @@ export const authRoutes = new Hono()
         let blackListed = await db.query.blackListedRefreshTokens.findFirst({
             where: eq(blackListedRefreshTokens.token, data.refreshToken)
         }).execute();
-        
+
         if (blackListed) {
             return _ctx.json({ error: "Token is blacklisted" }, 401)
         }
 
         let decoded = jwtAuth.verify(data.refreshToken, env.JWT_SECRET)
-        
+
         let user = await db.query.usersTable.findFirst({
             where: eq(usersTable.id, decoded.userId)
         }).execute();

@@ -14,11 +14,12 @@ import { eq } from 'drizzle-orm';
 import { userRoutes } from './routes/user.js';
 import _ from 'lodash';
 import { providerPrivateRoutes, providerPublicRoutes } from './routes/providers.js';
-import { filesRoutes, initBuckets } from './routes/files.js';
+import { filesRoutes } from './routes/files.js';
+import { initBuckets } from './storage/index.js';
 
 async function preStart() {
     RedisonStart();
-    initBuckets()
+    initBuckets();
 }
 
 declare module "hono" {
@@ -57,7 +58,10 @@ publicApp.use("/private/*", async (_ctx, next) => {
         return _ctx.json({ error: "Unauthorized" }, 401)
     }
     let user = await db.query.usersTable.findFirst({
-        where: eq(usersTable.id, jwtPayload.userId)
+        where: eq(usersTable.id, jwtPayload.userId),
+        with: {
+            avatar: true,
+        }
     }).execute()
     if (!user) {
         return _ctx.json({ error: "Unauthorized" }, 401)

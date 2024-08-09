@@ -14,6 +14,8 @@ import {
   MoonIcon,
 } from "lucide-react";
 import { Button } from '@/components/ui/button'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { useUser } from '@/providers/UserProvider'
 
 const appLinks: {
   to: LinkProps['to'],
@@ -57,6 +59,7 @@ function ThemeSwitcher() {
 }
 
 function Header() {
+  const user = useUser()
   return <>
     <header className='flex flex-col'>
       <div className='px-4 py-2 flex flex-row justify-between items-center'>
@@ -65,7 +68,13 @@ function Header() {
             Geno
           </h2>
         </div>
-        <div>
+        <div className='flex items-center gap-1'>
+          <Avatar className='size-8'>
+            <AvatarImage src={user?.meta.avatarUrl ?? ""} />
+            <AvatarFallback className='text-xs'>
+              {user?.user?.name[0] ?? "U"}
+            </AvatarFallback>
+          </Avatar>
           <ThemeSwitcher />
         </div>
       </div>

@@ -4,18 +4,15 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
 export function SettingsLayout() {
-  return <div className="flex items-start gap-5 p-10">
+  return <div className="flex items-start gap-5 p-10 flex-col lg:flex-row w-full">
 
-    <aside className="max-w-sm space-y-5">
-
+    <aside className="lg:max-w-sm w-full space-y-5">
       <div className="space-y-0.5">
         <h2 className="text-xl font-bold tracking-tight">Settings</h2>
         <p className="text-muted-foreground text-sm">
           Manage your account settings and set e-mail preferences.
         </p>
       </div>
-
-
       <nav
         className={
           "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1"
@@ -55,7 +52,7 @@ export function SettingsLayout() {
       </nav>
     </aside>
 
-    <div className="flex-1">
+    <div className="lg:flex-1 w-full">
       <Outlet />
     </div>
   </div>

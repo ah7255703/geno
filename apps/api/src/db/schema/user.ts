@@ -2,6 +2,8 @@ import { sql } from 'drizzle-orm';
 import { pgEnum, pgTable, serial, varchar, timestamp, boolean, uuid, text, primaryKey, integer, } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { socialAccountsTable } from './socialAccounts';
+import { filesTable } from './files';
+import { articlesTable } from './articles';
 
 export const userRole = pgEnum("user_role", [
     "admin",
@@ -31,7 +33,7 @@ export const usersTable = pgTable('user', {
     creationMethod: creationMethod('creation_method').notNull().default("email-password"),
     emailVerifiedAt: timestamp('verified_email_at'),
     emailVerified: boolean('verified_email').notNull().default(false),
-    image: varchar('image_url', { length: 256 }),
+    imageFileId: varchar('image_file_id').references(() => filesTable.id, { onDelete: "set null" }),
     theme: theme('theme').notNull().default("system"),
 });
 
@@ -53,5 +55,8 @@ export const verificationTokenRelations = relations(VerificationToken, ({ one, m
 
 export const userRelations = relations(usersTable, ({ one, many }) => ({
     verificationTokens: many(VerificationToken),
-    socialAccounts: many(socialAccountsTable)
+    socialAccounts: many(socialAccountsTable),
+    files: many(filesTable),
+    avatar: one(filesTable, { fields: [usersTable.imageFileId], references: [filesTable.id] }),
+    articles: many(articlesTable),
 }));
