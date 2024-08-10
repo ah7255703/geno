@@ -31,7 +31,7 @@ export class Telegraph {
         author_name: string;
         author_url?: string;
     }) {
-        let response = await fetch(`${this.baseUrl}/createAccount`, {
+        const response = await fetch(`${this.baseUrl}/createAccount`, {
             method: 'POST',
             body: JSON.stringify(payload),
             headers: {
@@ -52,7 +52,7 @@ export class Telegraph {
         author_url?: string;
         return_content?: boolean;
     }) {
-        let response = await fetch(`${this.baseUrl}/createPage`, {
+        const response = await fetch(`${this.baseUrl}/createPage`, {
             method: 'POST',
             body: JSON.stringify(payload),
             headers: {

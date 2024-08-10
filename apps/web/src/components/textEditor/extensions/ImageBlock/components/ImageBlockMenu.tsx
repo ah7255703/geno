@@ -1,12 +1,12 @@
 import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react'
 import { useCallback, useRef } from 'react'
-import { Instance, sticky } from 'tippy.js'
+import { type Instance, sticky } from 'tippy.js'
 import { v4 as uuid } from 'uuid'
 import { ImageBlockWidth } from './ImageBlockWidth'
 import { getRenderContainer } from '@/components/textEditor/lib/utils'
 import { Toolbar } from '@/components/textEditor/components/ui/Toolbar'
 import { Icon } from '@/components/textEditor/components/ui/Icon'
-import { MenuProps } from '@/components/textEditor/components/menus/types'
+import type { MenuProps } from '@/components/textEditor/components/menus/types'
 
 export const ImageBlockMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
   const menuRef = useRef<HTMLDivElement>(null)
@@ -89,7 +89,7 @@ export const ImageBlockMenu = ({ editor, appendTo }: MenuProps): JSX.Element => 
           <Icon name="AlignHorizontalDistributeEnd" />
         </Toolbar.Button>
         <Toolbar.Divider />
-        <ImageBlockWidth onChange={onWidthChange} value={parseInt(editor.getAttributes('imageBlock').width)} />
+        <ImageBlockWidth onChange={onWidthChange} value={Number.parseInt(editor.getAttributes('imageBlock').width)} />
       </Toolbar.Wrapper>
     </BaseBubbleMenu>
   )

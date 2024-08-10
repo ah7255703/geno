@@ -5,7 +5,7 @@ import ImageBlockMenu from '../../extensions/ImageBlock/components/ImageBlockMen
 import { ColumnsMenu } from '../../extensions/MultiColumn/menus'
 import { TableColumnMenu, TableRowMenu } from '../../extensions/Table/menus'
 import { TextMenu } from '../menus/TextMenu'
-import { EditorProps, useBlockEditor } from '../../hooks/useBlockEditor'
+import { type EditorProps, useBlockEditor } from '../../hooks/useBlockEditor'
 import { LinkMenu } from '../menus'
 
 export const BlockEditor = (props: EditorProps) => {

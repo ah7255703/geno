@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, redirect, LinkProps } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, redirect, type LinkProps } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { motion, useMotionValue, useScroll } from "framer-motion"
 import { cn } from '@/lib/utils'

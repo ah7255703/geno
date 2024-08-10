@@ -1,4 +1,4 @@
-import { Content, Editor, EditorEvents, useEditor } from '@tiptap/react'
+import { type Content, type Editor, type EditorEvents, useEditor } from '@tiptap/react'
 import { ExtensionKit } from '../extensions/extension-kit'
 
 declare global {

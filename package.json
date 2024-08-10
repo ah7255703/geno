@@ -8,6 +8,7 @@
     "dev": "dotenv -- turbo run dev --env-mode=loose",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
     "compose": "docker-compose up -d --build",
     "db:mig": "dotenv -- pnpm -F api migrate",

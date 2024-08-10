@@ -1,7 +1,7 @@
 import { BubbleMenu as BaseBubbleMenu } from '@tiptap/react'
 import { useCallback, useState } from 'react'
 
-import { MenuProps } from '../types'
+import type { MenuProps } from '../types'
 import { LinkPreviewPanel } from '../../../components/panels/LinkPreviewPanel'
 import { LinkEditorPanel } from '../../../components/panels'
 

@@ -11,12 +11,15 @@ export const appBuckets = [
 
 
 export function initBuckets() {
-    appBuckets.forEach(async (bucket) => {
-        let exists = await storage.bucketExists(bucket)
-        if (!exists) {
-            await storage.makeBucket(bucket)
-        }
-    })
+    for (let i = 0; i < appBuckets.length; i++) {
+        const bucket = appBuckets[i];
+        (async () => {
+            const exists = await storage.bucketExists(bucket);
+            if (!exists) {
+                await storage.makeBucket(bucket);
+            }
+        })();
+    }
 }
 
 
@@ -31,7 +34,7 @@ export const storage = new Client({
 
 export async function saveFiles(files: File[], bucketName: typeof appBuckets[number], userId?: string) {
 
-    let uploadedFilesMeta = await Promise.all(files.map(async (file) => {
+    const uploadedFilesMeta = await Promise.all(files.map(async (file) => {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         const fileMeta = {
@@ -40,13 +43,13 @@ export async function saveFiles(files: File[], bucketName: typeof appBuckets[num
             size: file.size,
             'Content-Type': file.type,
         }
-        let mdata = await storage.putObject(bucketName, fileMeta.key, buffer, file.size, fileMeta)
+        const mdata = await storage.putObject(bucketName, fileMeta.key, buffer, file.size, fileMeta)
         return {
             fileMeta
         }
     }))
 
-    let query = await db.insert(filesTable).values(uploadedFilesMeta.map((f) => ({
+    const query = await db.insert(filesTable).values(uploadedFilesMeta.map((f) => ({
         id: f.fileMeta.key,
         bucket: bucketName,
         userId: userId,

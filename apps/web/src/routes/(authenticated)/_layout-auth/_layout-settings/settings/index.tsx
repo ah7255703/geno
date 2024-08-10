@@ -35,7 +35,7 @@ export function Component() {
               return;
             }
             if (previewImage) {
-              let resp = await client.private.user.settings.profile.avatar.$post({
+              const resp = await client.private.user.settings.profile.avatar.$post({
                 form: {
                   avatarFile: [previewImage]
                 }

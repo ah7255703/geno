@@ -10,19 +10,19 @@ const filesRoutes = new Hono()
     .post("/upload/:bucketName", zValidator("form", z.object({
         files: z.any(),
     })), async (_ctx) => {
-        let parsedBody: {
+        const parsedBody: {
             [x: string]: string | File | (string | File)[];
         } = await _ctx.req.parseBody({
             all: true,
         })
         const user = _ctx.get("user")!;
-        let bucketName = _ctx.req.param("bucketName")
+        const bucketName = _ctx.req.param("bucketName")
 
-        if (!appBuckets.includes(bucketName as any)) {
+        if (!appBuckets.includes(bucketName)) {
             return _ctx.json({ error: "Invalid bucket" }, 400)
         }
 
-        let _files = parsedBody["files"]
+        const _files = parsedBody["files"]
 
         if (!_files) {
             return _ctx.json({ error: "No files found" }, 400)
@@ -39,7 +39,7 @@ const filesRoutes = new Hono()
         }
 
         if (bucketName === "avatars") {
-            let result = await saveFiles(files, bucketName, user.id);
+            const result = await saveFiles(files, bucketName, user.id);
 
         }
 
@@ -47,13 +47,13 @@ const filesRoutes = new Hono()
 
     })
     .get("/url/:bucketName/:key", async (_ctx) => {
-        let { key, bucketName } = _ctx.req.param()
-        let url = await storage.presignedGetObject(bucketName, key)
+        const { key, bucketName } = _ctx.req.param()
+        const url = await storage.presignedGetObject(bucketName, key)
         return _ctx.json({ url })
     })
     .get("userFiles", async (_ctx) => {
-        let user = _ctx.get("user")!;
-        let files = await db.query.filesTable.findMany({
+        const user = _ctx.get("user")!;
+        const files = await db.query.filesTable.findMany({
             where: eq(filesTable.userId, user.id),
         })
         return _ctx.json(files)

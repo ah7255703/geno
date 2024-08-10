@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { MoreVerticalIcon, PlusIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { InferResponseType } from "hono/client"
+import type { InferResponseType } from "hono/client"
 import { toast } from 'sonner';
 import { MultiStepComponent } from '@/components/MultiStepComponent';
 import { useForm } from 'react-hook-form';
@@ -94,8 +94,8 @@ function LinkAccountComponent() {
   const { user } = useUser()
   const getGithubLink = useMutation({
     mutationFn: async () => {
-      let redirectUrl = geFullUrl();
-      let resp = await client.private.providers.link[':providerId'].$post({
+      const redirectUrl = geFullUrl();
+      const resp = await client.private.providers.link[':providerId'].$post({
         param: {
           providerId: "github",
         },
@@ -104,7 +104,7 @@ function LinkAccountComponent() {
         }
       });
       if (resp.ok) {
-        let link = await resp.json();
+        const link = await resp.json();
         return link;
       }
       return null;
@@ -114,9 +114,9 @@ function LinkAccountComponent() {
   const availableProviders = useQuery({
     queryKey: ['providers'],
     queryFn: async () => {
-      let resp = await client.private.providers.available_to_add.$get();
+      const resp = await client.private.providers.available_to_add.$get();
       if (resp.ok) {
-        let data = await resp.json();
+        const data = await resp.json();
         return data;
       }
     }
@@ -153,7 +153,7 @@ function LinkAccountComponent() {
                           key={idx}
                           disabled={getGithubLink.isPending || !provider.available}
                           variant='outline' onClick={async () => {
-                            let link = await getGithubLink.mutateAsync();
+                            const link = await getGithubLink.mutateAsync();
                             if (link) {
                               window.open(link.link, '_blank');
                             }
@@ -190,7 +190,7 @@ function LinkAccountComponent() {
                   short_name: user?.name || '',
                 }}
                 onSubmit={async (data) => {
-                  let resp = await client.private.providers.link.telegraph.$post({
+                  const resp = await client.private.providers.link.telegraph.$post({
                     json: {
                       author_name: data.author_name,
                       short_name: data.short_name,
@@ -276,7 +276,7 @@ function ProviderCard({ provider }: { provider: ProviderType }) {
 
   const deleteProvider = useMutation({
     mutationFn: async () => {
-      let resp = await client.private.providers[':id'].$delete({
+      const resp = await client.private.providers[':id'].$delete({
         param: {
           id: provider.id.toString()
         }
@@ -342,7 +342,7 @@ export function Component() {
 
 export const Route = createFileRoute('/(authenticated)/_layout-auth/_layout-settings/settings/social-accounts')({
   async loader(ctx) {
-    let providers = await client.private.providers.$get();
+    const providers = await client.private.providers.$get();
     return providers.json()
   },
   component: Component

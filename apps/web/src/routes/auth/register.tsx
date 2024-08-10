@@ -29,7 +29,7 @@ function RegisterCard() {
   async function handleSubmit(_data: z.infer<typeof registerValidation>) {
     form.setError("root", {})
     try {
-      let res = await register.mutateAsync({
+      const res = await register.mutateAsync({
         json: _data
       });
       const data = await res.json()

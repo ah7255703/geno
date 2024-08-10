@@ -1,4 +1,5 @@
-import React, { useState, ReactNode } from "react";
+import type React from "react";
+import { useState, type ReactNode } from "react"
 
 type MultistepComponentProps<Steps extends readonly string[]> = {
     initialStep?: Steps[number];

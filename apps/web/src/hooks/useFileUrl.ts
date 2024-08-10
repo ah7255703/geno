@@ -8,13 +8,13 @@ export function useFileUrl(fileKey: string | null | undefined, bucketName: strin
             if (!fileKey) {
                 return null;
             }
-            let resp = await client.private.files.url[":bucketName"][":key"].$get({
+            const resp = await client.private.files.url[":bucketName"][":key"].$get({
                 param: {
                     bucketName,
                     key: fileKey
                 }
             });
-            let data = await resp.json()
+            const data = await resp.json()
             if (onSuccess) {
                 onSuccess(data.url);
             }

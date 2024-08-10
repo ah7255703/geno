@@ -4,7 +4,7 @@ import * as PopoverMenu from '../../../../components/ui/PopoverMenu'
 import { Toolbar } from '../../../../components/ui/Toolbar'
 import { isRowGripSelected } from './utils'
 import { Icon } from '../../../../components/ui/Icon'
-import { MenuProps, ShouldShowProps } from '../../../../components/menus/types'
+import type { MenuProps, ShouldShowProps } from '../../../../components/menus/types'
 
 export const TableRowMenu = React.memo(({ editor, appendTo }: MenuProps): JSX.Element => {
   const shouldShow = useCallback(

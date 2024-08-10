@@ -10,7 +10,7 @@ const jwtStrategy = <S extends z.ZodSchema>(
             return jwt.sign(schema.parse(data), secret, options)
         },
         verify: (token: string, secret: string): z.infer<S> => {
-            let payload = jwt.verify(token, secret) as unknown;
+            const payload = jwt.verify(token, secret) as unknown;
             return schema.parse(payload)
         },
         schema,

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { TagInputStyleClassesProps, type Tag as TagType } from './tag-input';
+import type { TagInputStyleClassesProps, Tag as TagType } from './tag-input';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';

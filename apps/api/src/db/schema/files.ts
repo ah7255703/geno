@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { AnyPgColumn, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
+import { type AnyPgColumn, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 import { usersTable } from "./user";
 
 export const filesTable = pgTable("files", {

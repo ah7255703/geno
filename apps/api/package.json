@@ -9,7 +9,9 @@
     "start": "node -r esbuild-register ./src/server.ts",
     "migrate": "drizzle-kit migrate",
     "generate": "drizzle-kit generate",
-    "studio": "drizzle-kit studio"
+    "studio": "drizzle-kit studio",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --fix"
   },
   "dependencies": {
     "@hono/node-server": "^1.12.0",
@@ -19,7 +21,7 @@
     "accesscontrol": "^2.2.1",
     "arctic": "^1.9.2",
     "bcrypt": "^5.1.1",
-    "bullmq": "^5.12.2",
+    "bullmq": "^5.12.3",
     "drizzle-kit": "^0.24.0",
     "drizzle-orm": "^0.33.0",
     "drizzle-zod": "^0.5.1",
@@ -38,7 +40,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@geno/eslint-config": "workspace:*",
     "@geno/typescript-config": "workspace:*",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.6",
@@ -47,12 +48,10 @@
     "@types/node": "^22.2.0",
     "@types/nodemailer": "^6.4.15",
     "@types/pg": "^8.11.6",
+    "@biomejs/biome": "1.8.3",
     "@types/react": "^18.3.3",
-    "@typescript-eslint/eslint-plugin": "^8.0.1",
-    "@typescript-eslint/parser": "^8.0.1",
     "esbuild": "^0.23.0",
     "esbuild-register": "^3.6.0",
-    "eslint": "^9.9.0",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"
   }

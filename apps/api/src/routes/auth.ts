@@ -18,16 +18,16 @@ export const authRoutes = new Hono()
         password: z.string().min(8),
         name: z.string().min(1),
     })), async (_ctx) => {
-        let data = _ctx.req.valid("json")
-        let doesExist = await db.query.usersTable.findFirst({
+        const data = _ctx.req.valid("json")
+        const doesExist = await db.query.usersTable.findFirst({
             where: eq(usersTable.email, data.email)
         }).execute();
         if (doesExist) {
             return _ctx.json({ error: "Email already exists" }, 400)
         }
-        let hashedPassword = await hash(data.password, rounds)
+        const hashedPassword = await hash(data.password, rounds)
 
-        let user = await db.insert(usersTable).values({
+        const user = await db.insert(usersTable).values({
             email: data.email,
             password: hashedPassword,
             name: data.name
@@ -41,8 +41,8 @@ export const authRoutes = new Hono()
         email: z.string().email(),
         password: z.string().min(8),
     })), async (_ctx) => {
-        let data = _ctx.req.valid("json")
-        let user = await db.query.usersTable.findFirst({
+        const data = _ctx.req.valid("json")
+        const user = await db.query.usersTable.findFirst({
             where: and(
                 eq(usersTable.email, data.email),
             )
@@ -50,22 +50,22 @@ export const authRoutes = new Hono()
         if (!user || !user.password) {
             return _ctx.json({ error: "User not found" }, 404)
         }
-        let passwordMatch = await compare(data.password, user.password)
+        const passwordMatch = await compare(data.password, user.password)
         if (!passwordMatch) {
             return _ctx.json({ error: "Incorrect password" }, 401)
         }
 
-        let accessToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_TOKEN_EXPIRY });
-        let refreshToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.REFRESH_TOKEN_EXPIRY });
+        const accessToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.JWT_TOKEN_EXPIRY });
+        const refreshToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: env.REFRESH_TOKEN_EXPIRY });
 
         return _ctx.json({ accessToken, refreshToken })
     })
     .post("/jwt/refresh", zValidator("json", z.object({
         refreshToken: z.string()
     })), async (_ctx) => {
-        let data = _ctx.req.valid("json")
+        const data = _ctx.req.valid("json")
 
-        let blackListed = await db.query.blackListedRefreshTokens.findFirst({
+        const blackListed = await db.query.blackListedRefreshTokens.findFirst({
             where: eq(blackListedRefreshTokens.token, data.refreshToken)
         }).execute();
 
@@ -73,9 +73,9 @@ export const authRoutes = new Hono()
             return _ctx.json({ error: "Token is blacklisted" }, 401)
         }
 
-        let decoded = jwtAuth.verify(data.refreshToken, env.JWT_SECRET)
+        const decoded = jwtAuth.verify(data.refreshToken, env.JWT_SECRET)
 
-        let user = await db.query.usersTable.findFirst({
+        const user = await db.query.usersTable.findFirst({
             where: eq(usersTable.id, decoded.userId)
         }).execute();
 
@@ -87,8 +87,8 @@ export const authRoutes = new Hono()
             token: data.refreshToken,
         }).execute()
 
-        let accessToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: "1d" });
-        let refreshToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: "7d" });
+        const accessToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: "1d" });
+        const refreshToken = jwtAuth.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: "7d" });
 
         return _ctx.json({ accessToken, refreshToken })
     })

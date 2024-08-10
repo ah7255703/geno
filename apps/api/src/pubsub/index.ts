@@ -1,4 +1,4 @@
-import redis, { RedisClientType } from 'redis';
+import redis, { type RedisClientType } from 'redis';
 import { env } from '../env';
 
 export const publisher: RedisClientType = redis.createClient({

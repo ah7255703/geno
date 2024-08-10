@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 import { Button } from '../ui/button';
-import { TagInputProps, TagInputStyleClassesProps, type Tag as TagType } from './tag-input';
+import type { TagInputProps, TagInputStyleClassesProps, Tag as TagType } from './tag-input';
 
 import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';

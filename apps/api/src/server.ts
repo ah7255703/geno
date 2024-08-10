@@ -6,7 +6,7 @@ import { socket } from './socket.js';
 import { onConnect as RedisonStart } from './pubsub/index.js';
 import { authRoutes } from './routes/auth.js';
 import { jwtAuth } from "./auth/jwt"
-import { z } from 'zod';
+import type { z } from 'zod';
 import { env } from './env.js';
 import { usersTable } from '@db/schema/user.js';
 import { db } from '@db/index.js';
@@ -39,16 +39,16 @@ publicApp.use(cors())
 publicApp.use(logger())
 
 publicApp.use(async (_ctx, next) => {
-    let authHeader = _ctx.req.header("Authorization")
-    let sessionId = _ctx.req.header("X-Session-Id")
+    const authHeader = _ctx.req.header("Authorization")
+    const sessionId = _ctx.req.header("X-Session-Id")
     if (sessionId) {
         _ctx.set("sessionId", sessionId)
     }
     if (authHeader && authHeader.startsWith(jwtAuth.authorization)) {
-        let token = authHeader.split(" ")[1].trim();
+        const token = authHeader.split(" ")[1].trim();
         if (token) {
             try {
-                let payload = await jwtAuth.verify(token, env.JWT_SECRET)
+                const payload = await jwtAuth.verify(token, env.JWT_SECRET)
                 console.log(payload)
                 _ctx.set("jwtPayload", payload)
             } catch (e) {
@@ -60,11 +60,11 @@ publicApp.use(async (_ctx, next) => {
 })
 
 publicApp.use("/private/*", async (_ctx, next) => {
-    let jwtPayload = _ctx.get("jwtPayload")
+    const jwtPayload = _ctx.get("jwtPayload")
     if (!jwtPayload) {
         return _ctx.json({ error: "Unauthorized" }, 401)
     }
-    let user = await db.query.usersTable.findFirst({
+    const user = await db.query.usersTable.findFirst({
         where: eq(usersTable.id, jwtPayload.userId),
         with: {
             avatar: true,

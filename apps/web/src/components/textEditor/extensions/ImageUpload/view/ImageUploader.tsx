@@ -1,7 +1,7 @@
 import { Spinner } from '@/components/textEditor/components/ui/Spinner'
 import { useDropZone, useFileUpload, useUploader } from './hooks'
 import { cn } from '@/lib/utils'
-import { ChangeEvent, useCallback } from 'react'
+import { type ChangeEvent, useCallback } from 'react'
 import { Icon } from '@/components/textEditor/components/ui/Icon'
 import { Button } from '@/components/textEditor/components/ui/Button'
 

@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid'
 
 import { ColumnLayout } from '../Columns'
 import { Icon } from '@/components/textEditor/components/ui/Icon'
-import { MenuProps } from '@/components/textEditor/components/menus/types'
+import type { MenuProps } from '@/components/textEditor/components/menus/types'
 import { getRenderContainer } from '@/components/textEditor/lib/utils'
 import { Toolbar } from '@/components/textEditor/components/ui/Toolbar'
 

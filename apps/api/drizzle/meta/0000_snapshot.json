@@ -1,5 +1,5 @@
 {
-  "id": "6b7f5434-1600-4542-b6dd-413186a280dc",
+  "id": "9ed3148a-677e-4464-8916-d4f73245d43b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -542,9 +542,10 @@
         },
         "content": {
           "name": "content",
-          "type": "varchar",
+          "type": "jsonb",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'{}'::jsonb"
         },
         "created_at": {
           "name": "created_at",
@@ -564,6 +565,13 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
+        },
+        "tags": {
+          "name": "tags",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::jsonb"
         }
       },
       "indexes": {},

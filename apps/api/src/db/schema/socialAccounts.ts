@@ -1,8 +1,8 @@
 import { pgEnum, pgTable, serial, timestamp, uuid, text, jsonb, primaryKey } from "drizzle-orm/pg-core";
 import { usersTable } from "./user";
 import { relations } from "drizzle-orm";
-import { GithubUser } from "src/providers/types/github";
-import { TelegraphAccount } from "src/providers/Telegraph";
+import type { GithubUser } from "src/providers/types/github";
+import type { TelegraphAccount } from "src/providers/Telegraph";
 
 export const supportedProviders = [
     "linkedin",

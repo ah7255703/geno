@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { AnyPgColumn, boolean, jsonb, pgTable, primaryKey, serial, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { type AnyPgColumn, boolean, jsonb, pgTable, primaryKey, serial, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { supportedProvidersEnum } from "./socialAccounts";
 import { usersTable } from "./user";
 import { filesTable } from "./files";
@@ -7,7 +7,7 @@ import { filesTable } from "./files";
 export const articlesTable = pgTable("articles", {
     id: uuid('id').default(sql`gen_random_uuid()`).primaryKey(),
     title: varchar("title").notNull(),
-    content: varchar("content").notNull(),
+    content: jsonb("content").default({}).notNull(),
     createdAt: timestamp('created_at').notNull().default(sql`now()`),
     updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
     userId: uuid("user_id").references((): AnyPgColumn => usersTable.id, { onDelete: "cascade" }),

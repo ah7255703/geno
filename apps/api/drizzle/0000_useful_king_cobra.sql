@@ -99,10 +99,11 @@ CREATE TABLE IF NOT EXISTS "article_publish" (
 CREATE TABLE IF NOT EXISTS "articles" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" varchar NOT NULL,
-	"content" varchar NOT NULL,
+	"content" jsonb DEFAULT '{}'::jsonb NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp NOT NULL,
-	"user_id" uuid
+	"user_id" uuid,
+	"tags" jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 --> statement-breakpoint
 DO $$ BEGIN

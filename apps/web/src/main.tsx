@@ -15,7 +15,7 @@ import { UserProvider } from './providers/UserProvider';
 import { Suspense, useEffect } from 'react';
 import { setAppSession } from './hooks/appSession';
 
-let np = NProgress.configure({ showSpinner: false, parent: "body", easing: 'ease' });
+const np = NProgress.configure({ showSpinner: false, parent: "body", easing: 'ease' });
 
 const router = createRouter({
     routeTree,
@@ -25,7 +25,7 @@ const router = createRouter({
 })
 
 router.__store.subscribe(() => {
-    let state = router.__store.state;
+    const state = router.__store.state;
     if (state.status === 'idle') {
         np.done();
     }

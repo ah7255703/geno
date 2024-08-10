@@ -8,20 +8,19 @@ import { saveFiles } from "src/storage";
 
 const articlesRoutes = new Hono()
     .get("/", async (_ctx) => {
-        let user = _ctx.get("user")!;
-        let articles = await db.query.articlesTable.findMany({ where: eq(articlesTable.userId, user.id) }).execute();
+        const user = _ctx.get("user")!;
+        const articles = await db.query.articlesTable.findMany({ where: eq(articlesTable.userId, user.id) });
         return _ctx.json(articles)
     })
     .post("/", zValidator("json", z.object({
         title: z.string(),
         tags: z.array(z.string()),
-        content: z.string(),
-        images: z.array(z.custom<File>(f => f instanceof File)),
+        content: z.any(),
     })), async (_ctx) => {
         const user = _ctx.get("user")!;
         const data = _ctx.req.valid("json");
-        let result = await db.transaction(async (trx) => {
-            let article = (await trx.insert(articlesTable).values({
+        const result = await db.transaction(async (trx) => {
+            const article = (await trx.insert(articlesTable).values({
                 content: data.content,
                 tags: data.tags,
                 title: data.title,
@@ -31,15 +30,8 @@ const articlesRoutes = new Hono()
                 trx.rollback();
                 return;
             }
-
-            let images = await saveFiles(data.images, "projects", user.id);
-            let imagesDb = trx.insert(articleFilesTable).values(images.map((image) => ({
-                articleId: article.id,
-                fileId: image.id,
-            }))).execute();
             return {
                 article,
-                imagesDb,
             }
         })
         return _ctx.json(result);

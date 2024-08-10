@@ -1,22 +1,22 @@
 "use client";
 import * as React from "react";
-import * as LabelPrimitive from "@radix-ui/react-label";
+import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import {
-  Control,
+  type Control,
   Controller,
-  ControllerProps,
-  ControllerRenderProps,
-  FieldPath,
-  FieldValues,
+  type ControllerProps,
+  type ControllerRenderProps,
+  type FieldPath,
+  type FieldValues,
   FormProvider,
-  FormState,
+  type FormState,
   useFormContext,
 } from "react-hook-form";
 import { Label } from "./label";
 import { cn } from "@/lib/utils";
-import { useDropzone } from "react-dropzone";
-import { ChangeEventHandler, FC } from "react";
+import { type DropzoneOptions, useDropzone } from "react-dropzone";
+import type { ChangeEventHandler, FC } from "react";
 import { Card, CardContent } from "./card";
 
 const Form = FormProvider;
@@ -266,16 +266,28 @@ export function DropzoneField<
 const Dropzone: FC<{
   multiple?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
-}> = ({ multiple, onChange, ...rest }) => {
-  const { getRootProps, getInputProps } = useDropzone({
-    multiple,
-    ...rest,
-  });
+} & DropzoneOptions> = ({ multiple, onChange, ...rest }) => {
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+    acceptedFiles,
+  } = useDropzone();
 
   return (
     <Card className='size-full overflow-auto'>
       <CardContent {...getRootProps()} className="size-full">
-        
+        {
+          acceptedFiles.map((file, index) => {
+            return <div>
+              <p>{file.name}</p>
+              <p>{file.size}</p>
+            </div>
+          })
+        }
       </CardContent>
       <input {...getInputProps({ onChange })} className="hidden" />
     </Card>

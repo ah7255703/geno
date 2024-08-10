@@ -13,9 +13,9 @@ const userRoutes = new Hono()
     .post("/settings", zValidator("json", z.object({
         theme: z.enum(["light", "dark", "system"]).optional(),
     })), async (_ctx) => {
-        let user = _ctx.get("user")!
-        let json = await _ctx.req.valid("json")
-        let resp = await db.update(usersTable).set({
+        const user = _ctx.get("user")!
+        const json = await _ctx.req.valid("json")
+        const resp = await db.update(usersTable).set({
             theme: json.theme
         })
             .where(
@@ -33,12 +33,12 @@ const userRoutes = new Hono()
             return false
         }),
     })), async (_ctx) => {
-        let user = _ctx.get("user")!
-        let parsedBody = await _ctx.req.parseBody({
+        const user = _ctx.get("user")!
+        const parsedBody = await _ctx.req.parseBody({
             all: true,
         })
-        let avatarFile = parsedBody["avatarFile"] as File
-        let result = await saveFiles([avatarFile], "avatars", user.id);
+        const avatarFile = parsedBody["avatarFile"] as File
+        const result = await saveFiles([avatarFile], "avatars", user.id);
         await db.update(usersTable).set({
             imageFileId: result[0].id
         }).where(

@@ -1,4 +1,4 @@
-import { BackendUser } from '@/providers/UserProvider'
+import type { BackendUser } from '@/providers/UserProvider'
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 

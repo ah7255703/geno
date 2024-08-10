@@ -1,6 +1,6 @@
 import { client } from "@/honoClient";
 import { createSafeProvider } from "./create-safe-provider";
-import { InferResponseType } from 'hono/client';
+import type { InferResponseType } from 'hono/client';
 import { useAuthContext } from "./AuthProvider";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useFileUrl } from "@/hooks/useFileUrl";
@@ -24,7 +24,7 @@ function UserProvider({ children }: { children: ((data: SharedData) => React.Rea
     const { data, isLoading } = useSuspenseQuery({
         queryKey: [tokens],
         queryFn: async () => {
-            let da = await client.private.user.me.$get();
+            const da = await client.private.user.me.$get();
             if (da.status === 401) {
                 if (tokens) {
                     logout()
@@ -39,9 +39,9 @@ function UserProvider({ children }: { children: ((data: SharedData) => React.Rea
 
     const { url } = useFileUrl(data?.imageFileId, 'avatars');
 
-    let user = data ?? null;
+    const user = data ?? null;
 
-    let authenticated = !!user && !isLoading;
+    const authenticated = !!user && !isLoading;
 
     const meta = {
         avatarUrl: url ?? null,

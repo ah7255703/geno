@@ -1,5 +1,4 @@
-export interface TiptapProps {
-}
+export type TiptapProps = {}
 
 export type EditorUser = {
   clientId: string

@@ -7,15 +7,15 @@ import { z } from "zod";
 import { GitHub, OAuth2RequestError } from "arctic";
 import { env } from "src/env";
 import bcrypt from "bcrypt";
-import { GithubUser } from "src/providers/types/github";
+import type { GithubUser } from "src/providers/types/github";
 import { Telegraph } from "src/providers/Telegraph";
 
 
-let github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET, {
+const github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET, {
     redirectURI: "http://localhost:3001/api/providers/callback/github"
 })
 
-let telegraph = new Telegraph();
+const telegraph = new Telegraph();
 
 // http://localhost:3001/api/providers/callback/github
 
@@ -23,21 +23,21 @@ let telegraph = new Telegraph();
 
 const providerPrivateRoutes = new Hono()
     .get("/", async (_ctx) => {
-        let user = _ctx.get("user")!
-        let providers = await db.query.socialAccountsTable.findMany({
+        const user = _ctx.get("user")!
+        const providers = await db.query.socialAccountsTable.findMany({
             where: eq(socialAccountsTable.userId, user.id)
         }).execute();
         return _ctx.json(providers)
     }).get("/available_to_add", async (_ctx) => {
-        let user = _ctx.get("user")!;
+        const user = _ctx.get("user")!;
 
-        let providers = await db.query.socialAccountsTable.findMany({
+        const providers = await db.query.socialAccountsTable.findMany({
             where: and(
                 eq(socialAccountsTable.userId, user.id),
             ),
         }).execute();
 
-        let availableProviders = supportedProviders.map(provider => ({
+        const availableProviders = supportedProviders.map(provider => ({
             provider,
             available: !providers.some(p => p.provider === provider)
         }))
@@ -47,9 +47,9 @@ const providerPrivateRoutes = new Hono()
     .get("/:id", zValidator("param", z.object({
         id: z.number()
     })), async (_ctx) => {
-        let user = _ctx.get("user")!
-        let params = _ctx.req.valid("param")
-        let provider = await db.query.socialAccountsTable.findFirst({
+        const user = _ctx.get("user")!
+        const params = _ctx.req.valid("param")
+        const provider = await db.query.socialAccountsTable.findFirst({
             where: and(
                 eq(socialAccountsTable.id, params.id),
                 eq(socialAccountsTable.userId, user.id),
@@ -60,9 +60,9 @@ const providerPrivateRoutes = new Hono()
     .put("/:id", zValidator("param", z.object({
         id: z.number()
     })), async (_ctx) => {
-        let user = _ctx.get("user")!
-        let params = _ctx.req.valid("param");
-        let provider = await db.query.socialAccountsTable.findFirst({
+        const user = _ctx.get("user")!
+        const params = _ctx.req.valid("param");
+        const provider = await db.query.socialAccountsTable.findFirst({
             where: and(
                 eq(socialAccountsTable.id, params.id),
                 eq(socialAccountsTable.userId, user.id),
@@ -76,10 +76,10 @@ const providerPrivateRoutes = new Hono()
         return _ctx.json({})
     })
     .delete("/:id", async (_ctx) => {
-        let user = _ctx.get("user")!
-        let id = _ctx.req.param("id");
-        let provider = await db.delete(socialAccountsTable).where(and(
-            eq(socialAccountsTable.id, parseInt(id)),
+        const user = _ctx.get("user")!
+        const id = _ctx.req.param("id");
+        const provider = await db.delete(socialAccountsTable).where(and(
+            eq(socialAccountsTable.id, Number.parseInt(id)),
             eq(socialAccountsTable.userId, user.id),
         )).returning().execute();
         return _ctx.json(provider)
@@ -89,9 +89,9 @@ const providerPrivateRoutes = new Hono()
         author_name: z.string(),
         author_url: z.string().optional()
     })), async (_ctx) => {
-        let user = _ctx.get("user")!;
-        let params = _ctx.req.valid("json");
-        let account = await telegraph.createAccount({
+        const user = _ctx.get("user")!;
+        const params = _ctx.req.valid("json");
+        const account = await telegraph.createAccount({
             short_name: params.short_name,
             author_name: params.author_name,
             author_url: params.author_url
@@ -119,15 +119,15 @@ const providerPrivateRoutes = new Hono()
             redirectUrl: z.string().optional()
         }))
         , async (_ctx) => {
-            let params = _ctx.req.valid("json");
-            let user = _ctx.get("user")!;
-            let providerId = _ctx.req.param("providerId");
-            let state = {
+            const params = _ctx.req.valid("json");
+            const user = _ctx.get("user")!;
+            const providerId = _ctx.req.param("providerId");
+            const state = {
                 userId: user.id,
                 redirectUrl: params.redirectUrl
             }
             if (providerId === "github") {
-                let link = await github.createAuthorizationURL(decodeURIComponent(JSON.stringify(state)), {
+                const link = await github.createAuthorizationURL(decodeURIComponent(JSON.stringify(state)), {
                     scopes: ["user:email"]
                 });
                 return _ctx.json({
@@ -138,9 +138,9 @@ const providerPrivateRoutes = new Hono()
             return _ctx.json({ message: "Provider not found" }, 404);
         })
     .get("/unlink/:providerId", async (_ctx) => {
-        let user = _ctx.get("user")!;
-        let providerId = _ctx.req.param("providerId") as any;
-        let provider = await db.query.socialAccountsTable.findFirst({
+        const user = _ctx.get("user")!;
+        const providerId = _ctx.req.param("providerId") as any;
+        const provider = await db.query.socialAccountsTable.findFirst({
             where: and(
                 eq(socialAccountsTable.userId, user.id),
                 eq(socialAccountsTable.provider, providerId)
@@ -159,17 +159,17 @@ const providerPublicRoutes = new Hono()
         state: z.string(),
         code: z.string()
     })), async (_ctx) => {
-        let params = _ctx.req.valid("query");
-        let state = JSON.parse(decodeURIComponent(params.state)) as { userId: string, redirectUrl: string };
+        const params = _ctx.req.valid("query");
+        const state = JSON.parse(decodeURIComponent(params.state)) as { userId: string, redirectUrl: string };
         try {
-            let githubTokens = await github.validateAuthorizationCode(params.code);
-            let token = await bcrypt.hash(githubTokens.accessToken, 10);
-            let githubAccountRequest = await fetch("https://api.github.com/user", {
+            const githubTokens = await github.validateAuthorizationCode(params.code);
+            const token = await bcrypt.hash(githubTokens.accessToken, 10);
+            const githubAccountRequest = await fetch("https://api.github.com/user", {
                 headers: {
                     Authorization: `Bearer ${githubTokens.accessToken}`
                 }
             })
-            let githubAccount = await githubAccountRequest.json() as GithubUser
+            const githubAccount = await githubAccountRequest.json() as GithubUser
             const savedData = await db.insert(socialAccountsTable).values({
                 accessToken: token,
                 provider: "github",

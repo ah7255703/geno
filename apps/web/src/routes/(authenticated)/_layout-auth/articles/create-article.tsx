@@ -7,20 +7,14 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { z } from 'zod';
-import { Card, CardContent } from '@/components/ui/card';
-import Dropzone, { useDropzone } from 'react-dropzone'
-import { XIcon } from 'lucide-react';
 import { BlockEditor } from '@/components/textEditor/components/BlockEditor';
-import { generateJSON, JSONContent } from '@tiptap/core';
+import type { JSONContent } from '@tiptap/core';
 import { useMutation } from '@tanstack/react-query';
 import { client } from '@/honoClient';
 
 const validation = z.object({
   title: z.string().min(1),
   content: z.custom<JSONContent>((f) => f),
-  images: z.array(
-    z.instanceof(File)
-  ),
   tags: z.array(z.object({
     id: z.string().min(1),
     text: z.string().min(1),
@@ -36,20 +30,17 @@ export function CreateArticleSegmentComponent() {
       title: '',
       content: {},
       tags: [],
-      images: []
     }
   });
-
   const [tagActiveIndex, setTagActiveIndex] = useState<number | null>(null);
 
   const createPostMutation = useMutation({
     mutationFn: async (_data: CreateArticleType) => {
-      let resp = await client.private.articles.$post({
+      const resp = await client.private.articles.$post({
         json: {
           title: _data.title,
-          images: _data.images,
           tags: _data.tags.map(t => t.text),
-          content: "test"
+          content: _data.content
         }
       })
       return resp.json()
@@ -57,6 +48,7 @@ export function CreateArticleSegmentComponent() {
   })
 
   function handleSubmit(_data: CreateArticleType) {
+    console.log(_data)
     createPostMutation.mutate(_data)
   }
 
@@ -72,9 +64,8 @@ export function CreateArticleSegmentComponent() {
 
         <main className='w-full'>
           <div className='grid grid-cols-10 gap-4 p-3'>
-
             <div
-              className='col-span-5 grid grid-cols-1 gap-2 grid-rows-5'
+              className='col-span-6 grid grid-cols-1 gap-2'
             >
               <Field
                 control={form.control}
@@ -97,18 +88,7 @@ export function CreateArticleSegmentComponent() {
                 }}
               />
             </div>
-
-
-            <div className='row-span-3 col-span-5' style={{ display: 'none' }}>
-              <DropzoneField
-                control={form.control}
-                name='images'
-                multiple
-              />
-            </div>
           </div>
-
-
           <div className='flex flex-col gap-2 p-3 col-span-5'>
             <Field
               label='Content'

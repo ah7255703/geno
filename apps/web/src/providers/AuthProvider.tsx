@@ -1,7 +1,7 @@
 import { typedStorage, useSyncedState } from "@/hooks/useSyncState";
 import { createSafeProvider } from "./create-safe-provider";
 import React, { useRef } from "react";
-import { TypedEventListener, TypedEventTarget } from 'typescript-event-target';
+import { type TypedEventListener, TypedEventTarget } from 'typescript-event-target';
 
 const [
     SafeProvider,

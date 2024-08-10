@@ -1,5 +1,5 @@
 import API from '@/components/textEditor/lib/api'
-import { DragEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { type DragEvent, useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 export const useUploader = ({ onUpload }: { onUpload: (url: string) => void }) => {

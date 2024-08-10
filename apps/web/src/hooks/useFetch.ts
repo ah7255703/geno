@@ -1,6 +1,6 @@
-import { DefaultError, QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query"
-import { InferRequestType } from "hono"
-import { ClientResponse, InferResponseType } from "hono/client"
+import { type DefaultError, type QueryKey, useQuery, type UseQueryOptions } from "@tanstack/react-query"
+import type { InferRequestType } from "hono"
+import type { ClientResponse, InferResponseType } from "hono/client"
 
 export const useEndpoint = <
     T extends (

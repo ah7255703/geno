@@ -27,11 +27,11 @@ function LoginCard() {
   })
 
   async function handleSubmit(_data: z.infer<typeof loginValidation>) {
-    let res = await login.mutateAsync({
+    const res = await login.mutateAsync({
       json: _data,
     });
 
-    let data = await res.json();
+    const data = await res.json();
     if (res.status === 200 && "accessToken" in data) {
       logintheuser(data);
       toast.success("Logged in successfully");

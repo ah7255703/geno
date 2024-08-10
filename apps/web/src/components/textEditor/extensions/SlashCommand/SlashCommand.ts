@@ -1,6 +1,6 @@
-import { Editor, Extension } from '@tiptap/core'
+import { type Editor, Extension } from '@tiptap/core'
 import { ReactRenderer } from '@tiptap/react'
-import Suggestion, { SuggestionProps, SuggestionKeyDownProps } from '@tiptap/suggestion'
+import Suggestion, { type SuggestionProps, type SuggestionKeyDownProps } from '@tiptap/suggestion'
 import { PluginKey } from '@tiptap/pm/state'
 import tippy from 'tippy.js'
 
@@ -190,7 +190,7 @@ export const SlashCommand = Extension.create({
                 return new DOMRect(rect.x, rect.y, rect.width, rect.height)
               }
 
-              let scrollHandler = () => {
+              const scrollHandler = () => {
                 popup?.[0].setProps({
                   getReferenceClientRect,
                 })

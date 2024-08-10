@@ -1,5 +1,5 @@
-import { RedisClientType } from 'redis';
-import { z, ZodSchema } from 'zod';
+import type { RedisClientType } from 'redis';
+import type { z, ZodSchema } from 'zod';
 import { publisher, subscriber } from '.';
 
 function publishTypedMessage<T extends ZodSchema>(redisClient: RedisClientType, schema: T) {
