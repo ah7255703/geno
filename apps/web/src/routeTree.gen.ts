@@ -18,6 +18,7 @@ import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as authenticatedLayoutAuthImport } from './routes/(authenticated)/_layout-auth'
 import { Route as authenticatedLayoutAuthIndexImport } from './routes/(authenticated)/_layout-auth/index'
 import { Route as authenticatedLayoutAuthLayoutSettingsImport } from './routes/(authenticated)/_layout-auth/_layout-settings'
+import { Route as authenticatedLayoutAuthFilesIndexImport } from './routes/(authenticated)/_layout-auth/files/index'
 import { Route as authenticatedLayoutAuthArticlesIndexImport } from './routes/(authenticated)/_layout-auth/articles/index'
 import { Route as authenticatedLayoutAuthArticlesCreateArticleImport } from './routes/(authenticated)/_layout-auth/articles/create-article'
 import { Route as authenticatedLayoutAuthLayoutSettingsSettingsIndexImport } from './routes/(authenticated)/_layout-auth/_layout-settings/settings/index'
@@ -59,6 +60,12 @@ const authenticatedLayoutAuthIndexRoute =
 const authenticatedLayoutAuthLayoutSettingsRoute =
   authenticatedLayoutAuthLayoutSettingsImport.update({
     id: '/_layout-settings',
+    getParentRoute: () => authenticatedLayoutAuthRoute,
+  } as any)
+
+const authenticatedLayoutAuthFilesIndexRoute =
+  authenticatedLayoutAuthFilesIndexImport.update({
+    path: '/files/',
     getParentRoute: () => authenticatedLayoutAuthRoute,
   } as any)
 
@@ -152,6 +159,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedLayoutAuthArticlesIndexImport
       parentRoute: typeof authenticatedLayoutAuthImport
     }
+    '/(authenticated)/_layout-auth/files/': {
+      id: '/_layout-auth/files/'
+      path: '/files'
+      fullPath: '/files'
+      preLoaderRoute: typeof authenticatedLayoutAuthFilesIndexImport
+      parentRoute: typeof authenticatedLayoutAuthImport
+    }
     '/(authenticated)/_layout-auth/_layout-settings/settings/apperance': {
       id: '/_layout-auth/_layout-settings/settings/apperance'
       path: '/settings/apperance'
@@ -190,6 +204,7 @@ export const routeTree = rootRoute.addChildren({
       authenticatedLayoutAuthIndexRoute,
       authenticatedLayoutAuthArticlesCreateArticleRoute,
       authenticatedLayoutAuthArticlesIndexRoute,
+      authenticatedLayoutAuthFilesIndexRoute,
     }),
   }),
   AuthRegisterRoute,
@@ -222,7 +237,8 @@ export const routeTree = rootRoute.addChildren({
         "/_layout-auth/_layout-settings",
         "/_layout-auth/",
         "/_layout-auth/articles/create-article",
-        "/_layout-auth/articles/"
+        "/_layout-auth/articles/",
+        "/_layout-auth/files/"
       ]
     },
     "/auth/register": {
@@ -250,6 +266,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout-auth/articles/": {
       "filePath": "(authenticated)/_layout-auth/articles/index.tsx",
+      "parent": "/_layout-auth"
+    },
+    "/_layout-auth/files/": {
+      "filePath": "(authenticated)/_layout-auth/files/index.tsx",
       "parent": "/_layout-auth"
     },
     "/_layout-auth/_layout-settings/settings/apperance": {

@@ -15,6 +15,9 @@ import {
 } from "react-hook-form";
 import { Label } from "./label";
 import { cn } from "@/lib/utils";
+import { useDropzone } from "react-dropzone";
+import { ChangeEventHandler, FC } from "react";
+import { Card, CardContent } from "./card";
 
 const Form = FormProvider;
 
@@ -223,6 +226,62 @@ function Field<
     />
   );
 }
+
+export function DropzoneField<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  name,
+  multiple,
+  control,
+  ...rest
+}: {
+  name: TName;
+  multiple?: boolean;
+  control: Control<TFieldValues>;
+}) {
+  return (
+    <Controller
+      render={({ field: { onChange } }) => (
+        <Dropzone
+          multiple={multiple}
+          onChange={(e) =>
+            onChange(
+              multiple
+                ? e.target.files
+                : e.target.files?.[0] ?? null
+            )
+          }
+          {...rest}
+        />
+      )}
+      name={name}
+      control={control}
+      // @ts-ignore
+      defaultValue=""
+    />
+  );
+};
+
+const Dropzone: FC<{
+  multiple?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+}> = ({ multiple, onChange, ...rest }) => {
+  const { getRootProps, getInputProps } = useDropzone({
+    multiple,
+    ...rest,
+  });
+
+  return (
+    <Card className='size-full overflow-auto'>
+      <CardContent {...getRootProps()} className="size-full">
+        
+      </CardContent>
+      <input {...getInputProps({ onChange })} className="hidden" />
+    </Card>
+  );
+};
+
 
 export {
   useFormField,

@@ -1,6 +1,6 @@
 import { TagInput } from '@/components/tag/tag-input';
 import { Button } from '@/components/ui/button';
-import { Field, Form } from '@/components/ui/form';
+import { DropzoneField, Field, Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createFileRoute } from '@tanstack/react-router'
@@ -8,10 +8,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { z } from 'zod';
 import { Card, CardContent } from '@/components/ui/card';
-import { useDropzone } from 'react-dropzone'
+import Dropzone, { useDropzone } from 'react-dropzone'
 import { XIcon } from 'lucide-react';
 import { BlockEditor } from '@/components/textEditor/components/BlockEditor';
-import { JSONContent } from '@tiptap/core';
+import { generateJSON, JSONContent } from '@tiptap/core';
+import { useMutation } from '@tanstack/react-query';
+import { client } from '@/honoClient';
 
 const validation = z.object({
   title: z.string().min(1),
@@ -27,7 +29,6 @@ const validation = z.object({
 
 type CreateArticleType = z.infer<typeof validation>
 
-
 export function CreateArticleSegmentComponent() {
   const form = useForm<CreateArticleType>({
     resolver: zodResolver(validation),
@@ -41,31 +42,37 @@ export function CreateArticleSegmentComponent() {
 
   const [tagActiveIndex, setTagActiveIndex] = useState<number | null>(null);
 
-  const { getRootProps, getInputProps } = useDropzone({
-    noClick: true,
-    onDropAccepted(files, event) {
-      form.setValue("images", files)
-    },
+  const createPostMutation = useMutation({
+    mutationFn: async (_data: CreateArticleType) => {
+      let resp = await client.private.articles.$post({
+        json: {
+          title: _data.title,
+          images: _data.images,
+          tags: _data.tags.map(t => t.text),
+          content: "test"
+        }
+      })
+      return resp.json()
+    }
   })
 
-  function handleSubmit(_data: CreateArticleType) { }
+  function handleSubmit(_data: CreateArticleType) {
+    createPostMutation.mutate(_data)
+  }
 
   return (<div className='flex items-start lg:p-6 p-4 flex-col w-full'>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className='contents'>
-        <input
-          {...getInputProps()}
-          className='hidden'
-        />
         <header className='flex items-center gap-5 py-2 justify-between w-full'>
           <h2 className='text-xl font-bold tracking-tight'>Create Article</h2>
           <Button size='sm' type='submit'>
             Save
           </Button>
         </header>
-        <main className='w-full'
-        >
+
+        <main className='w-full'>
           <div className='grid grid-cols-10 gap-4 p-3'>
+
             <div
               className='col-span-5 grid grid-cols-1 gap-2 grid-rows-5'
             >
@@ -90,38 +97,19 @@ export function CreateArticleSegmentComponent() {
                 }}
               />
             </div>
-            <Field
-              control={form.control}
-              name='images'
-              className='row-span-3'
-              render={(f) => {
-                return <Card className='size-full overflow-auto'
-                  {...getRootProps()}>
-                  <CardContent className='grid grid-cols-4 gap-2 overflow-auto p-4'>
-                    {
-                      f.value.map((_, index) => {
-                        return <div key={index} className='aspect-square rounded-lg relative'>
-                          <Button
-                            onClick={() => {
-                              f.onChange(f.value.filter((__, i) => i !== index))
-                            }}
-                            size='xicon' className='rounded-full absolute left-1 top-1' variant='secondary'>
-                            <XIcon className='size-4' />
-                          </Button>
-                          <img
-                            className='w-full size-full object-cover rounded-lg'
-                            src={
-                              typeof _ === 'string' ? _ : URL.createObjectURL(_)
-                            } alt="" />
-                        </div>
-                      })
-                    }
-                  </CardContent>
-                </Card>
-              }}
-            />
+
+
+            <div className='row-span-3 col-span-5' style={{ display: 'none' }}>
+              <DropzoneField
+                control={form.control}
+                name='images'
+                multiple
+              />
+            </div>
           </div>
-          <div className='flex flex-col gap-2 p-3'>
+
+
+          <div className='flex flex-col gap-2 p-3 col-span-5'>
             <Field
               label='Content'
               control={form.control}

@@ -2,6 +2,9 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { appBuckets, saveFiles, storage } from "src/storage";
+import { db } from "@db/index";
+import { eq } from "drizzle-orm";
+import { filesTable } from "@db/schema";
 
 const filesRoutes = new Hono()
     .post("/upload/:bucketName", zValidator("form", z.object({
@@ -47,6 +50,13 @@ const filesRoutes = new Hono()
         let { key, bucketName } = _ctx.req.param()
         let url = await storage.presignedGetObject(bucketName, key)
         return _ctx.json({ url })
+    })
+    .get("userFiles", async (_ctx) => {
+        let user = _ctx.get("user")!;
+        let files = await db.query.filesTable.findMany({
+            where: eq(filesTable.userId, user.id),
+        })
+        return _ctx.json(files)
     })
 
 export {

@@ -11,6 +11,7 @@ export const articlesTable = pgTable("articles", {
     createdAt: timestamp('created_at').notNull().default(sql`now()`),
     updatedAt: timestamp('updated_at').notNull().$onUpdate(() => new Date()),
     userId: uuid("user_id").references((): AnyPgColumn => usersTable.id, { onDelete: "cascade" }),
+    tags: jsonb("tags").notNull().default([]).$type<string[]>(),
 })
 
 export const articlePublishTable = pgTable("article_publish", {

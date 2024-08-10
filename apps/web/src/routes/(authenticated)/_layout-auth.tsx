@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, redirect, LinkProps } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { motion, useScroll } from 'framer-motion'
+import { motion, useMotionValue, useScroll } from "framer-motion"
 import { cn } from '@/lib/utils'
 import { useTheme } from 'next-themes'
 import {
@@ -16,6 +16,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { useUser } from '@/providers/UserProvider'
+import { useEffect, useState } from 'react'
+import { useMeasure } from "@uidotdev/usehooks";
 
 const appLinks: {
   to: LinkProps['to'],
@@ -32,6 +34,10 @@ const appLinks: {
     {
       to: "/articles",
       label: "Articles"
+    },
+    {
+      to: "/files",
+      label: "Files"
     }
   ]
 
@@ -64,10 +70,26 @@ function ThemeSwitcher() {
 
 function Header() {
   const user = useUser();
-  const scroll = useScroll()
+  const { scrollY } = useScroll();
+  const [
+    progress,
+    setProgress
+  ] = useState(0)
+
+  useEffect(() => {
+    setProgress(scrollY.get())
+    return scrollY.on("change", (latest) => {
+      setProgress(latest)
+    })
+  }, [])
+
+  const [ref, { height, width }] = useMeasure()
+
+  const scrolledTo = progress > (height ?? 0)
+
   return <>
-    <header className='flex flex-col'>
-      <div className='px-4 py-2 flex flex-row justify-between items-center'>
+    <header className='flex flex-col' ref={ref}>
+      <div className='px-5 py-2 flex flex-row justify-between items-center'>
         <div>
           <h2 className='text-2xl font-bold tracking-tight'>
             Geno
@@ -84,10 +106,28 @@ function Header() {
         </div>
       </div>
     </header>
-    <div className='px-4 p-2 sticky top-0 z-10 border-b bg-background/60 backdrop-blur-sm'>
-    {
-      scroll.scrollYProgress.get()
-    }
+
+    <div className='px-4 p-2 h-12 overflow-hidden flex flex-row items-center gap-2 sticky top-0 z-10 border-b bg-background/60 backdrop-blur-sm'>
+      <motion.div
+        variants={{
+          hidden: {
+            y: 50,
+            display: 'hidden',
+            width: 0
+          },
+          visible: {
+            y: 0,
+            width: "fit-content",
+            display: 'visible'
+          }
+        }}
+        animate={scrolledTo ? 'visible' : 'hidden'}
+        className='flex flex-row justify-between items-center'>
+        <h2 className='text-lg font-bold tracking-tight'>
+          Geno
+        </h2>
+      </motion.div>
+
       <nav className='flex flex-row gap-1 items-center'>
         {
           appLinks.map((link) => {
@@ -110,6 +150,7 @@ function Header() {
         }
       </nav>
     </div>
+
   </>
 }
 
