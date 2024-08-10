@@ -9,8 +9,19 @@
 			"recommended": true,
 			"style": {
 				"noNonNullAssertion": "off"
-			}
+			},
+			"suspicious": {
+				"noExplicitAny": "info"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "warn"
+			},
+			"nursery": {},
+			"complexity": {}
 		},
+		"ignore":[
+			"**/*.gen.ts"
+		],
 		"include": [
 			"**/*.ts",
 			"**/*.tsx"

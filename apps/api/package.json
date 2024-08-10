@@ -11,7 +11,7 @@
     "generate": "drizzle-kit generate",
     "studio": "drizzle-kit studio",
     "lint": "biome lint",
-    "lint:fix": "biome lint --fix"
+    "lint:fix": "biome lint --write"
   },
   "dependencies": {
     "@hono/node-server": "^1.12.0",

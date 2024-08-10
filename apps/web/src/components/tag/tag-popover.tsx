@@ -41,6 +41,7 @@ export const TagPopover: React.FC<TagPopoverProps> = ({
     const [inputFocused, setInputFocused] = useState(false);
     const [sideOffset, setSideOffset] = useState<number>(0);
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         const handleResize = () => {
             if (triggerContainerRef.current && triggerRef.current) {
@@ -87,7 +88,7 @@ export const TagPopover: React.FC<TagPopoverProps> = ({
                 setIsPopoverOpen(open);
             }
         },
-        [inputFocused],
+        []
     );
 
     const handleInputFocus = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLTextAreaElement>) => {
@@ -131,7 +132,7 @@ export const TagPopover: React.FC<TagPopoverProps> = ({
                         size="icon"
                         type='button'
                         role="combobox"
-                        className={cn(`hover:bg-transparent`, classStyleProps?.popoverClasses?.popoverTrigger)}
+                        className={cn("hover:bg-transparent", classStyleProps?.popoverClasses?.popoverTrigger)}
                         onClick={() => setIsPopoverOpen(!isPopoverOpen)}
                     >
                         <svg
@@ -146,14 +147,15 @@ export const TagPopover: React.FC<TagPopoverProps> = ({
                             strokeLinejoin="round"
                             className={`lucide lucide-chevron-down h-4 w-4 shrink-0 opacity-50 ${isPopoverOpen ? 'rotate-180' : 'rotate-0'}`}
                         >
-                            <path d="m6 9 6 6 6-6"></path>
+                            <title>Open Tag List</title>
+                            <path d="m6 9 6 6 6-6" />
                         </svg>
                     </Button>
                 </PopoverTrigger>
             </div>
             <PopoverContent
                 ref={popoverContentRef}
-                className={cn(`w-full space-y-3`, classStyleProps?.popoverClasses?.popoverContent)}
+                className={cn("w-full space-y-3", classStyleProps?.popoverClasses?.popoverContent)}
                 style={{
                     marginLeft: `-${sideOffset}px`,
                     width: `${popoverWidth}px`,

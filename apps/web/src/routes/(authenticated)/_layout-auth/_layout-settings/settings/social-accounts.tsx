@@ -223,7 +223,7 @@ function LinkAccountComponent() {
 type ProviderType = InferResponseType<typeof client.private.providers.$get>[number]
 
 function ProviderAvatar({ provider }: { provider: ProviderType }) {
-  if (provider.provider === 'github' && provider.accountData && "avatar_url" in provider?.accountData) {
+  if (provider.provider === 'github' && provider.accountData && "avatar_url" in provider.accountData) {
     return <><Avatar>
       <AvatarImage
         src={provider.accountData?.avatar_url}
@@ -247,7 +247,7 @@ function ProviderAvatar({ provider }: { provider: ProviderType }) {
     </>
   }
 
-  if (provider.provider === 'telegraph' && provider.accountData && "author_name" in provider?.accountData) {
+  if (provider.provider === 'telegraph' && provider.accountData && "author_name" in provider.accountData) {
     return <><Avatar>
       <AvatarFallback>
         <ProviderIcon provider={provider.provider} />
@@ -333,7 +333,7 @@ export function Component() {
     <Separator />
     <div className='grid gap-2 grid-cols-2'>
       {
-        loaderData.map((provider, idx) => <ProviderCard provider={provider} key={idx} />)
+        loaderData.map((provider, idx) => <ProviderCard provider={provider} key={provider.id} />)
       }
     </div>
   </div>

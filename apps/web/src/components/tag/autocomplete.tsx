@@ -174,7 +174,9 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                                 strokeLinejoin="round"
                                 className={`lucide lucide-chevron-down h-4 w-4 shrink-0 opacity-50 ${isPopoverOpen ? 'rotate-180' : 'rotate-0'}`}
                             >
-                                <path d="m6 9 6 6 6-6"></path>
+                                <path d="m6 9 6 6 6-6" />
+                                <title>
+                                </title>
                             </svg>
                         </Button>
                     </PopoverTrigger>
@@ -184,7 +186,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                     side="bottom"
                     align="end"
                     forceMount
-                    className={cn(`p-0 relative`, classStyleProps?.popoverContent)}
+                    className={cn("p-0 relative", classStyleProps?.popoverContent)}
                 >
                     <div
                         className={cn('max-h-[300px] overflow-y-auto overflow-x-hidden', classStyleProps?.commandList)}
@@ -203,11 +205,13 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                                 }}
                             >
                                 <span className="text-muted-foreground font-medium text-sm py-1.5 px-2 pb-2">Suggestions</span>
-                                <div role="separator" className="py-0.5" />
+                                <div role="separator" className="py-0.5" aria-valuemax={0} aria-valuemin={0} aria-valuenow={0} />
                                 {autocompleteOptions.map((option) => {
                                     return (
-                                        <div
+                                        // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+<div
                                             key={option.id}
+                                            // biome-ignore lint/a11y/useAriaPropsForRole: <explanation>
                                             role="option"
                                             className={cn(
                                                 'relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-accent',
@@ -231,7 +235,10 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                                                         strokeLinejoin="round"
                                                         className="lucide lucide-check"
                                                     >
-                                                        <path d="M20 6 9 17l-5-5"></path>
+                                                        <path d="M20 6 9 17l-5-5"/>
+                                                        <title>
+                                                            
+                                                        </title>
                                                     </svg>
                                                 )}
                                             </div>

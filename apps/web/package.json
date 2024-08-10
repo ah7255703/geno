@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "biome lint",
     "preview": "vite preview",
-    "lint:fix": "biome lint --fix"
+    "lint:fix": "biome lint --write"
   },
   "dependencies": {
     "@files-ui/react": "^1.2.4",

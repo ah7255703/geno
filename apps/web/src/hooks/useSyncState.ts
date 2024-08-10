@@ -40,7 +40,7 @@ export function typedStorageWithKey<TData>(_storage: StorageType, key: string) {
     };
 }
 
-function useSyncedState<TData = any>(key: string, defaultValue: TData | null = null, storage?: ReturnType<typeof typedStorage<TData>>) {
+function useSyncedState<TData = unknown>(key: string, defaultValue: TData | null = null, storage?: ReturnType<typeof typedStorage<TData>>) {
     const storageRef = useRef(storage ?? typedStorage<TData>("local"));
 
     const [state, setState] = useState<TData | null>(() => {
@@ -51,12 +51,14 @@ function useSyncedState<TData = any>(key: string, defaultValue: TData | null = n
         return defaultValue;
     });
     
-    useEffect(() => {
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+        useEffect(() => {
         const storageValue = storageRef.current.getItem(key);
         if (storageValue !== null) {
             setState(storageValue);
         }
     }, [])
+    
     const setSyncedState = useCallback((newState: TData | null) => {
         setState(newState);
         storageRef.current.setItem(key, newState);

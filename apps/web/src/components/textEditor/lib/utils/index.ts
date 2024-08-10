@@ -5,6 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function randomElement(array: Array<any>) {
   return array[Math.floor(Math.random() * array.length)]
 }
