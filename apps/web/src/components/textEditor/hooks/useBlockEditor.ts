@@ -1,6 +1,5 @@
-import { Editor, useEditor } from '@tiptap/react'
+import { Content, Editor, EditorEvents, useEditor } from '@tiptap/react'
 import { ExtensionKit } from '../extensions/extension-kit'
-import { initialContent } from '../lib/data/initialContent'
 
 declare global {
   interface Window {
@@ -8,13 +7,18 @@ declare global {
   }
 }
 
-export const useBlockEditor = () => {
+export type EditorProps = {
+  initialContent?: Content;
+  onChange?: (props: EditorEvents['update']) => void;
+}
+
+export const useBlockEditor = ({ initialContent, onChange }: EditorProps) => {
   const editor = useEditor(
     {
       immediatelyRender: false,
       autofocus: true,
       onCreate: ({ editor }) => {
-        editor.commands.setContent(initialContent)
+        editor.commands.setContent(initialContent || '')
         editor.commands.focus('start', { scrollIntoView: true })
       },
       extensions: [
@@ -27,6 +31,10 @@ export const useBlockEditor = () => {
           autocapitalize: 'off',
           class: 'min-h-full',
         },
+      },
+      content: initialContent,
+      onUpdate(props) {
+        onChange?.(props)
       },
     },
     [],

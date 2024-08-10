@@ -38,19 +38,22 @@ import {
 
 import { ImageUpload } from './ImageUpload'
 import { TableOfContentsNode } from './TableOfContentsNode'
-
+import GlobalDragHandle from 'tiptap-extension-global-drag-handle'
+import AutoJoiner from 'tiptap-extension-auto-joiner' // optional
 
 export const ExtensionKit = () => [
   Document,
   Columns,
   TaskList,
+  GlobalDragHandle,
+  AutoJoiner,
   TaskItem.configure({
     nested: true,
   }),
   Column,
   Selection,
   Heading.configure({
-    levels: [1, 2, 3, 4, 5, 6],
+    levels: [4, 5, 6],
   }),
   HorizontalRule,
   StarterKit.configure({
@@ -92,8 +95,8 @@ export const ExtensionKit = () => [
   TableRow,
   Typography,
   Placeholder.configure({
-    includeChildren: true,
-    showOnlyCurrent: false,
+    includeChildren: false,
+    showOnlyCurrent: true,
     placeholder: () => '',
   }),
   SlashCommand,

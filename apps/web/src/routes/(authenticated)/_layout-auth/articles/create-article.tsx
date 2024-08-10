@@ -7,21 +7,15 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { z } from 'zod';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
 import { Card, CardContent } from '@/components/ui/card';
 import { useDropzone } from 'react-dropzone'
 import { XIcon } from 'lucide-react';
 import { BlockEditor } from '@/components/textEditor/components/BlockEditor';
+import { JSONContent } from '@tiptap/core';
 
 const validation = z.object({
   title: z.string().min(1),
-  content: z.string().min(1),
+  content: z.custom<JSONContent>((f) => f),
   images: z.array(
     z.instanceof(File)
   ),
@@ -39,7 +33,7 @@ export function CreateArticleSegmentComponent() {
     resolver: zodResolver(validation),
     defaultValues: {
       title: '',
-      content: '',
+      content: {},
       tags: [],
       images: []
     }
@@ -70,7 +64,6 @@ export function CreateArticleSegmentComponent() {
           </Button>
         </header>
         <main className='w-full'
-          {...getRootProps()}
         >
           <div className='grid grid-cols-10 gap-4 p-3'>
             <div
@@ -96,66 +89,47 @@ export function CreateArticleSegmentComponent() {
                   />
                 }}
               />
-              <Field
-                control={form.control}
-                name='images'
-                className='row-span-3'
-                render={(f) => {
-                  return <Card className='size-full overflow-auto'>
-                    <CardContent className='grid grid-cols-4 gap-2 overflow-auto p-4'>
-                      {
-                        f.value.map((_, index) => {
-                          return <div key={index} className='aspect-square rounded-lg relative'>
-                            <Button
-                              onClick={() => {
-                                f.onChange(f.value.filter((__, i) => i !== index))
-                              }}
-                              size='xicon' className='rounded-full absolute left-1 top-1' variant='secondary'>
-                              <XIcon className='size-4' />
-                            </Button>
-                            <img
-                              className='w-full size-full object-cover rounded-lg'
-                              src={
-                                typeof _ === 'string' ? _ : URL.createObjectURL(_)
-                              } alt="" />
-                          </div>
-                        })
-                      }
-                    </CardContent>
-                  </Card>
-                }}
-              />
             </div>
             <Field
               control={form.control}
               name='images'
-              className='col-span-5'
-              label='Images'
+              className='row-span-3'
               render={(f) => {
-                return <Carousel className='aspect-square border rounded-lg group overflow-hidden'>
-                  <CarouselContent>
-                    {f.value.map((_, index) => (
-                      <CarouselItem key={index} className='aspect-square rounded-lg h-full'>
-                        <img
-                          className='object-cover w-full h-full rounded-lg'
-                          src={
-                            typeof _ === 'string' ? _ : URL.createObjectURL(_)
-                          } alt="" />
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious
-                    className='absolute top-1/2 left-2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity'
-                  />
-                  <CarouselNext
-                    className='absolute top-1/2 right-2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity'
-                  />
-                </Carousel>
+                return <Card className='size-full overflow-auto'
+                  {...getRootProps()}>
+                  <CardContent className='grid grid-cols-4 gap-2 overflow-auto p-4'>
+                    {
+                      f.value.map((_, index) => {
+                        return <div key={index} className='aspect-square rounded-lg relative'>
+                          <Button
+                            onClick={() => {
+                              f.onChange(f.value.filter((__, i) => i !== index))
+                            }}
+                            size='xicon' className='rounded-full absolute left-1 top-1' variant='secondary'>
+                            <XIcon className='size-4' />
+                          </Button>
+                          <img
+                            className='w-full size-full object-cover rounded-lg'
+                            src={
+                              typeof _ === 'string' ? _ : URL.createObjectURL(_)
+                            } alt="" />
+                        </div>
+                      })
+                    }
+                  </CardContent>
+                </Card>
               }}
             />
           </div>
-          <div>
-            <BlockEditor
+          <div className='flex flex-col gap-2 p-3'>
+            <Field
+              label='Content'
+              control={form.control}
+              name='content'
+              render={(f) => <BlockEditor
+                initialContent={f.value}
+                onChange={(props) => f.onChange(props.editor.getJSON())}
+              />}
             />
           </div>
         </main>

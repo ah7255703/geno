@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, redirect, LinkProps } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { motion } from 'framer-motion'
+import { motion, useScroll } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { useTheme } from 'next-themes'
 import {
@@ -63,7 +63,8 @@ function ThemeSwitcher() {
 }
 
 function Header() {
-  const user = useUser()
+  const user = useUser();
+  const scroll = useScroll()
   return <>
     <header className='flex flex-col'>
       <div className='px-4 py-2 flex flex-row justify-between items-center'>
@@ -83,7 +84,10 @@ function Header() {
         </div>
       </div>
     </header>
-    <div className='px-4 p-2 sticky top-0 z-10 border-b'>
+    <div className='px-4 p-2 sticky top-0 z-10 border-b bg-background/60 backdrop-blur-sm'>
+    {
+      scroll.scrollYProgress.get()
+    }
       <nav className='flex flex-row gap-1 items-center'>
         {
           appLinks.map((link) => {

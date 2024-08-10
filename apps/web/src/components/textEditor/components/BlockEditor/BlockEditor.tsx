@@ -4,15 +4,13 @@ import { useRef } from 'react'
 import ImageBlockMenu from '../../extensions/ImageBlock/components/ImageBlockMenu'
 import { ColumnsMenu } from '../../extensions/MultiColumn/menus'
 import { TableColumnMenu, TableRowMenu } from '../../extensions/Table/menus'
-import { TiptapProps } from './types'
 import { TextMenu } from '../menus/TextMenu'
-import { ContentItemMenu } from '../menus/ContentItemMenu'
-import { useBlockEditor } from '../../hooks/useBlockEditor'
+import { EditorProps, useBlockEditor } from '../../hooks/useBlockEditor'
 import { LinkMenu } from '../menus'
 
-export const BlockEditor = ({  }: TiptapProps) => {
+export const BlockEditor = (props: EditorProps) => {
   const menuContainerRef = useRef(null)
-  const { editor } = useBlockEditor()
+  const { editor } = useBlockEditor(props)
 
   if (!editor) {
     return null
@@ -20,9 +18,12 @@ export const BlockEditor = ({  }: TiptapProps) => {
 
   return (
     <div className="flex h-full" ref={menuContainerRef}>
-      <div className="relative flex flex-col flex-1 h-full overflow-hidden">
-        <EditorContent editor={editor} className="flex-1 overflow-y-auto" />
-        <ContentItemMenu editor={editor} />
+      <div className="relative flex flex-col flex-1 h-full">
+        <EditorContent
+          placeholder='Start typing...'
+          
+          editor={editor} className="flex-1 overflow-y-auto" />
+        {/* <ContentItemMenu editor={editor} /> */}
         <LinkMenu editor={editor} appendTo={menuContainerRef} />
         <TextMenu editor={editor} />
         <ColumnsMenu editor={editor} appendTo={menuContainerRef} />

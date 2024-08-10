@@ -6,33 +6,33 @@ export const GROUPS: Group[] = [
     title: 'Format',
     commands: [
       {
-        name: 'heading1',
-        label: 'Heading 1',
-        iconName: 'Heading1',
+        name: 'heading4',
+        label: 'Heading 4',
+        iconName: 'Heading4',
         description: 'High priority section title',
-        aliases: ['h1'],
+        aliases: ['h4'],
         action: editor => {
-          editor.chain().focus().setHeading({ level: 1 }).run()
+          editor.chain().focus().setHeading({ level: 4 }).run()
         },
       },
       {
-        name: 'heading2',
-        label: 'Heading 2',
-        iconName: 'Heading2',
+        name: 'heading5',
+        label: 'Heading 5',
+        iconName: 'Heading5',
         description: 'Medium priority section title',
-        aliases: ['h2'],
+        aliases: ['h5'],
         action: editor => {
-          editor.chain().focus().setHeading({ level: 2 }).run()
+          editor.chain().focus().setHeading({ level: 5 }).run()
         },
       },
       {
-        name: 'heading3',
-        label: 'Heading 3',
-        iconName: 'Heading3',
+        name: 'heading6',
+        label: 'Heading 6',
+        iconName: 'Heading6',
         description: 'Low priority section title',
-        aliases: ['h3'],
+        aliases: ['h6'],
         action: editor => {
-          editor.chain().focus().setHeading({ level: 3 }).run()
+          editor.chain().focus().setHeading({ level: 6 }).run()
         },
       },
       {

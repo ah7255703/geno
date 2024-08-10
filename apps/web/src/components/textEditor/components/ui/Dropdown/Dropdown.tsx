@@ -29,7 +29,7 @@ export const DropdownButton = React.forwardRef<
   )
 
   return (
-    <button className={buttonClass} disabled={disabled} onClick={onClick} ref={ref}>
+    <button className={buttonClass} type='button' disabled={disabled} onClick={onClick} ref={ref}>
       {children}
     </button>
   )
