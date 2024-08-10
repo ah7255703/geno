@@ -18,7 +18,6 @@ import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUser } from '@/providers/UserProvider';
-import { Tooltip, TooltipTrigger } from '@/components/ui/tooltip';
 
 
 function geFullUrl() {
@@ -146,11 +145,11 @@ function LinkAccountComponent() {
               </DialogHeader>
               <div className='grid gap-2 grid-cols-2'>
                 {
-                  availableProviders.data?.map((provider, idx) => {
+                  availableProviders.data?.map((provider) => {
                     switch (provider.provider) {
                       case "github":
                         return <Button
-                          key={idx}
+                          key={provider.provider}
                           disabled={getGithubLink.isPending || !provider.available}
                           variant='outline' onClick={async () => {
                             const link = await getGithubLink.mutateAsync();
@@ -163,7 +162,7 @@ function LinkAccountComponent() {
                           Link Github</Button>
                       case "telegraph":
                         return <Button
-                          key={idx}
+                          key={provider.provider}
                           onClick={() => setStep('telegraph')}
                           disabled={!provider.available}
                           variant='outline'>
@@ -177,7 +176,7 @@ function LinkAccountComponent() {
                 }
               </div>
             </>
-          } else if (currentStep === "telegraph") {
+          } if (currentStep === "telegraph") {
             return <>
               <DialogHeader>
                 <DialogTitle>
@@ -248,7 +247,7 @@ function ProviderAvatar({ provider }: { provider: ProviderType }) {
     </>
   }
 
-  else if (provider.provider === 'telegraph' && provider.accountData && "author_name" in provider?.accountData) {
+  if (provider.provider === 'telegraph' && provider.accountData && "author_name" in provider?.accountData) {
     return <><Avatar>
       <AvatarFallback>
         <ProviderIcon provider={provider.provider} />

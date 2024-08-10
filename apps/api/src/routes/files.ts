@@ -18,11 +18,11 @@ const filesRoutes = new Hono()
         const user = _ctx.get("user")!;
         const bucketName = _ctx.req.param("bucketName")
 
-        if (!appBuckets.includes(bucketName)) {
+        if (!appBuckets.includes(bucketName as typeof appBuckets[number])) {
             return _ctx.json({ error: "Invalid bucket" }, 400)
         }
 
-        const _files = parsedBody["files"]
+        const _files = parsedBody.files
 
         if (!_files) {
             return _ctx.json({ error: "No files found" }, 400)

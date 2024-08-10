@@ -48,7 +48,6 @@
     "@types/node": "^22.2.0",
     "@types/nodemailer": "^6.4.15",
     "@types/pg": "^8.11.6",
-    "@biomejs/biome": "1.8.3",
     "@types/react": "^18.3.3",
     "esbuild": "^0.23.0",
     "esbuild-register": "^3.6.0",

@@ -3,22 +3,17 @@
 	"organizeImports": {
 		"enabled": true
 	},
-	"javascript":{
-		
-	},
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"suspicious":{
-				
-			},
-			"style":{
-				"noNonNullAssertion": "warn"
-			},
-			"security":{
-
+			"style": {
+				"noNonNullAssertion": "off"
 			}
-		}
+		},
+		"include": [
+			"**/*.ts",
+			"**/*.tsx"
+		]
 	}
 }
