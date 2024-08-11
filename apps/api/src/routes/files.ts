@@ -58,7 +58,22 @@ const filesRoutes = new Hono()
         })
         return _ctx.json(files)
     })
-
+    .post("image", zValidator("form", z.object({
+        image: z.custom<File>((value) => {
+            if (value instanceof File) {
+                return value
+            }
+        })
+    })), async (_ctx) => {
+        const user = _ctx.get("user")!
+        const { image } = _ctx.req.valid("form");
+        const uploadRes = (await saveFiles([image], "etc", user.id)).at(0);
+        if (!uploadRes) {
+            return _ctx.json({ error: "Failed to upload" }, 500)
+        };
+        const url = await storage.presignedGetObject("etc", uploadRes.id);
+        return _ctx.json({ url, ...uploadRes })
+    })
 export {
     filesRoutes,
 }

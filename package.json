@@ -21,14 +21,15 @@
   },
   "packageManager": "pnpm@9.6.0",
   "dependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@manypkg/cli": "^0.21.4",
+    "@types/pg": "^8.11.6",
+    "add": "^2.0.6",
     "dotenv-cli": "^7.4.2",
     "drizzle-orm": "^0.33.0",
     "pg": "^8.12.0",
     "prettier": "^3.3.3",
     "turbo": "^2.0.12",
     "typescript": "^5.5.4"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.8.3"
   }
 }

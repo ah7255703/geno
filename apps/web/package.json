@@ -85,7 +85,7 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.1.8",
     "framer-motion": "^11.3.24",
-    "hono": "^4.5.4",
+    "hono": "^4.5.5",
     "immer": "^10.1.1",
     "input-otp": "^1.2.4",
     "jotai": "^2.9.2",

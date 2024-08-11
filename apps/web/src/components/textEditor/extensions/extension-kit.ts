@@ -40,7 +40,7 @@ import { ImageUpload } from './ImageUpload'
 import { TableOfContentsNode } from './TableOfContentsNode'
 import GlobalDragHandle from 'tiptap-extension-global-drag-handle'
 import AutoJoiner from 'tiptap-extension-auto-joiner' // optional
-
+import { generateHTML, type JSONContent } from "@tiptap/core"
 export const ExtensionKit = () => [
   Document,
   Columns,
@@ -108,5 +108,9 @@ export const ExtensionKit = () => [
     class: 'ProseMirror-dropcursor border-black',
   }),
 ]
+
+export const genHtml = (content: JSONContent) => {
+  return generateHTML(content, ExtensionKit())
+}
 
 export default ExtensionKit

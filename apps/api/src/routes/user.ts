@@ -37,7 +37,7 @@ const userRoutes = new Hono()
         const parsedBody = await _ctx.req.parseBody({
             all: true,
         })
-        const avatarFile = parsedBody["avatarFile"] as File
+        const avatarFile = parsedBody.avatarFile as File
         const result = await saveFiles([avatarFile], "avatars", user.id);
         await db.update(usersTable).set({
             imageFileId: result[0].id

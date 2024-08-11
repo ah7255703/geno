@@ -89,7 +89,7 @@ function Header() {
 
   return <>
     <header className='flex flex-col' ref={ref}>
-      <div className='px-5 py-2 flex flex-row justify-between items-center'>
+      <div className='px-5 py-2 flex flex-row justify-between items-center container'>
         <div>
           <h2 className='text-2xl font-bold tracking-tight'>
             Geno
@@ -107,7 +107,7 @@ function Header() {
       </div>
     </header>
 
-    <div className='px-4 p-2 h-12 overflow-hidden flex flex-row items-center gap-2 sticky top-0 z-10 border-b bg-background/60 backdrop-blur-sm'>
+    <div className='px-4 p-2 h-12 overflow-hidden flex container flex-row items-center gap-2 sticky top-0 z-10 border-b bg-background/60 backdrop-blur-sm'>
       <motion.div
         variants={{
           hidden: {
@@ -157,7 +157,9 @@ function Header() {
 export function AuthLayout() {
   return <div>
     <Header />
-    <Outlet />
+    <div className='container'>
+      <Outlet />
+    </div>
   </div>
 }
 

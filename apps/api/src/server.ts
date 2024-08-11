@@ -17,6 +17,7 @@ import { providerPrivateRoutes, providerPublicRoutes } from './routes/providers.
 import { filesRoutes } from './routes/files.js';
 import { initBuckets } from './storage/index.js';
 import { articlesRoutes } from './routes/articles.js';
+import { trackSession } from './middlewares/trackSession.js';
 
 async function preStart() {
     RedisonStart();
@@ -44,7 +45,7 @@ publicApp.use(async (_ctx, next) => {
     if (sessionId) {
         _ctx.set("sessionId", sessionId)
     }
-    if (authHeader && authHeader.startsWith(jwtAuth.authorization)) {
+    if (authHeader?.startsWith(jwtAuth.authorization)) {
         const token = authHeader.split(" ")[1].trim();
         if (token) {
             try {
@@ -79,11 +80,13 @@ publicApp.use("/private/*", async (_ctx, next) => {
     await next()
 })
 
+publicApp.use(trackSession)
+
 const privateApp = new Hono()
     .route('/user', userRoutes)
     .route("/providers", providerPrivateRoutes)
-    .route("/files", filesRoutes)
     .route("/articles", articlesRoutes)
+    .route("/files", filesRoutes)
 
 const allRoutes =
     publicApp.route("/auth", authRoutes)
@@ -95,8 +98,9 @@ const server = serve({
     fetch: publicApp.fetch,
     port
 }, (info) => {
+    console.log(`Server running at http://localhost:${port}`)
     preStart()
 })
-console.log(`Server running at http://localhost:${port}`)
+
 socket.listen(server)
 export type BackendRoutes = typeof allRoutes

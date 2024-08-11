@@ -96,7 +96,7 @@ const providerPrivateRoutes = new Hono()
             author_name: params.author_name,
             author_url: params.author_url
         });
-        
+
         if (!account.ok) {
             return _ctx.json({ error: "Failed to create account" }, 500)
         }
@@ -107,7 +107,7 @@ const providerPrivateRoutes = new Hono()
             userId: user.id,
             accountData: account.result,
         }).returning().execute();
-        
+
         if (!savedData.at(0)) {
             return _ctx.json({ error: "Failed to save account data" }, 500)
         }
@@ -184,9 +184,8 @@ const providerPublicRoutes = new Hono()
         } catch (error) {
             if (error instanceof OAuth2RequestError) {
                 return _ctx.json({ error: error.message }, 500)
-            } else {
-                throw error;
             }
+            throw error;
         }
 
     })

@@ -1,5 +1,5 @@
 import { hc } from 'hono/client';
-import type { BackendRoutes } from "../../api/src/server";
+import type { BackendRoutes } from "../../api/src/server.ts";
 import { TOKENS_STORAGE_KEY, tokenStorage } from './providers/AuthProvider';
 import { jwtDecode } from "jwt-decode";
 import { isBefore } from "date-fns";
@@ -44,7 +44,7 @@ export const client = hc<BackendRoutes>("http://localhost:3001", {
         if (session) {
             _headers["X-Session-Id"] = session.sessionValue;
         }
-        
+
         return _headers
     },
 }).api;
