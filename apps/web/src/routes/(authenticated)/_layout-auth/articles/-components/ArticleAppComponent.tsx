@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod';
 import { BlockEditor } from '@/components/textEditor/components/BlockEditor';
 import type { JSONContent } from '@tiptap/core';
+import { DropZone } from '@/components/ui/dropzone';
 
 const validation = z.object({
   title: z.string().min(1),
@@ -16,6 +17,10 @@ const validation = z.object({
     id: z.string().min(1),
     text: z.string().min(1),
   })),
+  images: z.array(z.object({
+    id: z.string().min(1),
+    file: z.custom<File>((f) => f),
+  }))
 })
 
 export type CreateArticleType = z.infer<typeof validation>
@@ -52,7 +57,7 @@ export function ArticleAppComponent({
         <main className='w-full'>
           <div className='grid grid-cols-10 gap-4 p-3'>
             <div
-              className='col-span-6 grid grid-cols-1 gap-2'
+              className='lg:col-span-6 col-span-full grid grid-cols-1 gap-2'
             >
               <Field
                 control={form.control}
@@ -75,6 +80,17 @@ export function ArticleAppComponent({
                 }}
               />
             </div>
+            <Field
+              control={form.control}
+              name='images'
+              render={(f) => {
+                return <DropZone
+                onChange={(files) => f.onChange(files)}
+                defaultValue={f.value}
+                />
+              }}
+              className='lg:col-span-4 col-span-full flex flex-col' />
+
           </div>
           <div className='flex flex-col gap-2 p-3 col-span-5'>
             <Field

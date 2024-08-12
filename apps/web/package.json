@@ -124,6 +124,7 @@
     "@tailwindcss/typography": "^0.5.14",
     "@tanstack/router-devtools": "^1.47.1",
     "@tanstack/router-plugin": "^1.47.0",
+    "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^22.2.0",
     "@types/nprogress": "^0.2.3",
     "@types/react": "^18.3.3",

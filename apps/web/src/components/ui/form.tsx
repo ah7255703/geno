@@ -282,7 +282,7 @@ const Dropzone: FC<{
       <CardContent {...getRootProps()} className="size-full">
         {
           acceptedFiles.map((file, index) => {
-            return <div>
+            return <div key={file.name}>
               <p>{file.name}</p>
               <p>{file.size}</p>
             </div>

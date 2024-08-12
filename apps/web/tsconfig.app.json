@@ -37,7 +37,8 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src"
+    "src",
+    "reset.d.ts"
   ],
   "exclude": [
     "dist",
